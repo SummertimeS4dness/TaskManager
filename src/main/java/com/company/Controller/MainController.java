@@ -151,6 +151,7 @@ public class MainController {
         arrayTaskList.add(task);
         taskControllers.add(new TaskController(task));
         logger.info("Task added: " + task.toString());
+        back = false;
     }
 
     public static void nonRepeatedTaskHandler(){
@@ -179,6 +180,7 @@ public class MainController {
         arrayTaskList.add(task);
         taskControllers.add(new TaskController(task));
         logger.info("Task added: " + task.toString());
+        back = false;
     }
 
     public static void editTaskHandler(){
@@ -348,6 +350,8 @@ public class MainController {
         }
         menu.update(arrayTaskList);
         logger.info("Task edited: " + task.toString());
+        back = false;
+        back1 = false;
     }
 
     public static void deleteTaskHandler() {
@@ -378,6 +382,7 @@ public class MainController {
         TaskController.getTasksToDo().remove(task.getTitle());
         arrayTaskList.remove(arrayTaskList.getTask(taskNumber));
         menu.remove(taskNumber);
+        back = false;
     }
 
     public static void listTaskHandler() {
