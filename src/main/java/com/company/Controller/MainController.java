@@ -107,16 +107,19 @@ public class MainController {
         String dateStr;
         String title;
         String res;
+        String warning;
         Date start = new Date();
         Date end = new Date();
 
         System.out.println("Enter title:");
         res = scanner.nextLine();
         title = processBackspace(res);
+        warning = "Enter start time in format \"yyyy-MM-dd HH:mm\":";
         do {
-            System.out.println("Enter start time in format \"yyyy-MM-dd HH:mm\":");
+            System.out.println(warning);
             res = scanner.nextLine();
             dateStr = processBackspace(res);
+            warning = "Error in your input, enter start time in format \"yyyy-MM-dd HH:mm\" again:";
         } while (!dateValidator(dateStr));
 
         try {
@@ -125,10 +128,12 @@ public class MainController {
             e.printStackTrace();
         }
 
+        warning = "Enter end time in format \"yyyy-MM-dd HH:mm\":";
         do {
-            System.out.println("Enter end time in format \"yyyy-MM-dd HH:mm\":");
+            System.out.println(warning);
             res = scanner.nextLine();
             dateStr = processBackspace(res);
+            warning = "Error in your input, enter end time in format \"yyyy-MM-dd HH:mm\" again:";
         } while (!dateValidator(dateStr));
 
         try {
@@ -137,14 +142,15 @@ public class MainController {
             e.printStackTrace();
         }
 
-        System.out.println("Enter interval in minutes:");
+
         int interval;
         while (true) {
             try {
+                System.out.println("Enter interval in minutes:");
                 interval = Integer.parseInt(scanner.nextLine());
                 break;
             } catch (NumberFormatException nfe) {
-                System.out.print("Enter interval in minutes: ");
+                System.out.print("Error in your input, interval in minutes again: ");
             }
         }
         task = new Task(title, start, end, interval * 60000);
@@ -160,15 +166,18 @@ public class MainController {
         String res;
         String dateStr;
         String title;
+        String warning;
         Date time = new Date();
 
         System.out.println("Enter title:");
         res = scanner.nextLine();
         title = processBackspace(res);
-        System.out.println("Enter time in format \"yyyy-MM-dd HH:mm\":");
+        warning = "Enter time in format \"yyyy-MM-dd HH:mm\":";
         do {
+            System.out.println(warning);
             res = scanner.nextLine();
             dateStr = processBackspace(res);
+            warning = "Error in your input, enter time in format \"yyyy-MM-dd HH:mm\" again:";
         } while (!dateValidator(dateStr));
 
         try {
@@ -225,6 +234,7 @@ public class MainController {
     private static void editingOfCharacteristicHandler(int i, Menu menu){
         String res;
         String res1;
+        String warning;
         int interval;
         Date date = new Date();
         Task task =  arrayTaskList.getTask(taskNumber - 1);
@@ -245,10 +255,12 @@ public class MainController {
                 taskControllers.add(new TaskController(task));
                 break;
             case 2:
-                System.out.println("Enter new start:");
+                warning = "Enter new start in format \"yyyy-MM-dd HH:mm\":";
                 do {
+                    System.out.println(warning);
                     res = scanner.nextLine();
                     res1 = processBackspace(res);
+                    warning = "Error in your input, enter new start in format \"yyyy-MM-dd HH:mm\" again:";
                 } while (!dateValidator(res1));
 
                 try {
@@ -266,10 +278,12 @@ public class MainController {
                 TaskController.getTasksToDo().remove(task.getTitle());
                 break;
             case 3:
-                System.out.println("Enter new end:");
+                warning = "Enter new end in format \"yyyy-MM-dd HH:mm\":";
                 do {
+                    System.out.println(warning);
                     res = scanner.nextLine();
                     res1 = processBackspace(res);
+                    warning = "Error in your input, enter new end in format \"yyyy-MM-dd HH:mm\" again:";
                 } while (!dateValidator(res1));
 
                 try {
@@ -292,7 +306,7 @@ public class MainController {
                         interval = Integer.parseInt(scanner.nextLine());
                         break;
                     } catch (NumberFormatException e) {
-                        System.out.print("Enter new interval in minutes:");
+                        System.out.print("Error in your input, enter new interval in minutes again:");
                     }
                     for(Timer timer: timers){
                         timer.cancel();
@@ -326,10 +340,12 @@ public class MainController {
                 task.setActive(active);
                 break;
             case 6:
-                System.out.println("Enter new time:");
+                warning = "Enter new time in format \"yyyy-MM-dd HH:mm\":";
                 do {
+                    System.out.println(warning);
                     res = scanner.nextLine();
                     res1 = processBackspace(res);
+                    warning = "Error in your input, enter new time in format \"yyyy-MM-dd HH:mm\" again:";
                 } while (!dateValidator(res1));
 
                 try {
@@ -398,6 +414,7 @@ public class MainController {
                     System.out.println(task.toString());
                     System.out.println();
                 }
+
             }
             else {
                 System.out.println("No tasks in your list yet");
@@ -411,9 +428,11 @@ public class MainController {
         Date start = null;
         Date end = null;
         String string;
-        System.out.println("Enter start time in format \"yyyy-MM-dd HH:mm\":");
+        String warning = "Enter start in format \"yyyy-MM-dd HH:mm\":";
         do {
+            System.out.println(warning);
             string = scanner.nextLine();
+            warning = "Error in your input, enter start in format \"yyyy-MM-dd HH:mm\" again:";
         } while (!dateValidator(string));
 
         try {
@@ -422,9 +441,11 @@ public class MainController {
             e.printStackTrace();
         }
 
-        System.out.println("Enter end time in format \"yyyy-MM-dd HH:mm\":");
+        warning = "Enter end in format \"yyyy-MM-dd HH:mm\":";
         do {
+            System.out.println(warning);
             string = scanner.nextLine();
+            warning = "Error in your input, enter end in format \"yyyy-MM-dd HH:mm\" again:";
         } while (!dateValidator(string));
 
         try {
