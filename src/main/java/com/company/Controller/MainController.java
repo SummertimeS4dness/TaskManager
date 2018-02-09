@@ -95,6 +95,7 @@ public class MainController {
         back = true;
 
         while(back) {
+            consoleView.getConsole().setCountTo0();
             ConsoleView.getConsole().clear();
             System.out.println("Choose type of task:");
             menu.show();
@@ -111,11 +112,14 @@ public class MainController {
         Date start = new Date();
         Date end = new Date();
 
+        consoleView.getConsole().setCountTo0();
         System.out.println("Enter title:");
         res = scanner.nextLine();
         title = processBackspace(res);
         warning = "Enter start time in format \"yyyy-MM-dd HH:mm\":";
+        consoleView.getConsole().setCountTo0();
         do {
+            consoleView.getConsole().setCountTo0();
             System.out.println(warning);
             res = scanner.nextLine();
             dateStr = processBackspace(res);
@@ -128,8 +132,10 @@ public class MainController {
             e.printStackTrace();
         }
 
+        consoleView.getConsole().setCountTo0();
         warning = "Enter end time in format \"yyyy-MM-dd HH:mm\":";
         do {
+            consoleView.getConsole().setCountTo0();
             System.out.println(warning);
             res = scanner.nextLine();
             dateStr = processBackspace(res);
@@ -142,11 +148,12 @@ public class MainController {
             e.printStackTrace();
         }
 
-
+        consoleView.getConsole().setCountTo0();
         int interval;
         while (true) {
             try {
                 System.out.println("Enter interval in minutes:");
+                consoleView.getConsole().setCountTo0();
                 interval = Integer.parseInt(scanner.nextLine());
                 break;
             } catch (NumberFormatException nfe) {
@@ -169,11 +176,14 @@ public class MainController {
         String warning;
         Date time = new Date();
 
+        consoleView.getConsole().setCountTo0();
         System.out.println("Enter title:");
         res = scanner.nextLine();
         title = processBackspace(res);
+        consoleView.getConsole().setCountTo0();
         warning = "Enter time in format \"yyyy-MM-dd HH:mm\":";
         do {
+            consoleView.getConsole().setCountTo0();
             System.out.println(warning);
             res = scanner.nextLine();
             dateStr = processBackspace(res);
@@ -201,6 +211,7 @@ public class MainController {
         back = true;
 
         while(back) {
+            consoleView.getConsole().setCountTo0();
             ConsoleView.getConsole().clear();
             System.out.println("Choose task to edit:");
             menu.show();
@@ -210,6 +221,7 @@ public class MainController {
     private static void selectionOfCharacteristicHandler(Menu menu){
         taskNumber = menu.getChoosen();
         Menu menu1 = new Menu(ConsoleView.getConsole());
+        consoleView.getConsole().setCountTo0();
         if(arrayTaskList.getTask(taskNumber - 1).isRepeated()) {
             menu1.add("Title", new MenuCallback() { public void Invoke() { editingOfCharacteristicHandler(1, menu); } });
             menu1.add("Start", new MenuCallback() { public void Invoke() { editingOfCharacteristicHandler(2, menu); } });
@@ -240,6 +252,7 @@ public class MainController {
         Task task =  arrayTaskList.getTask(taskNumber - 1);
         ArrayList<Timer> timers = TaskController.getTasksToDo().get(task.getTitle());
         boolean active = true;
+        consoleView.getConsole().setCountTo0();
         switch (i){
             case 1:
                 System.out.println("Enter new title:");
@@ -257,6 +270,7 @@ public class MainController {
             case 2:
                 warning = "Enter new start in format \"yyyy-MM-dd HH:mm\":";
                 do {
+                    consoleView.getConsole().setCountTo0();
                     System.out.println(warning);
                     res = scanner.nextLine();
                     res1 = processBackspace(res);
@@ -280,6 +294,7 @@ public class MainController {
             case 3:
                 warning = "Enter new end in format \"yyyy-MM-dd HH:mm\":";
                 do {
+                    consoleView.getConsole().setCountTo0();
                     System.out.println(warning);
                     res = scanner.nextLine();
                     res1 = processBackspace(res);
@@ -307,6 +322,7 @@ public class MainController {
                         break;
                     } catch (NumberFormatException e) {
                         System.out.print("Error in your input, enter new interval in minutes again:");
+                        consoleView.getConsole().setCountTo0();
                     }
                     for(Timer timer: timers){
                         timer.cancel();
@@ -322,6 +338,7 @@ public class MainController {
                 while(true) {
                     res = scanner.nextLine();
                     res1 = processBackspace(res);
+                    consoleView.getConsole().setCountTo0();
                     if(res1.equals("true")){
                         active = true;
                         break;
@@ -342,6 +359,7 @@ public class MainController {
             case 6:
                 warning = "Enter new time in format \"yyyy-MM-dd HH:mm\":";
                 do {
+                    consoleView.getConsole().setCountTo0();
                     System.out.println(warning);
                     res = scanner.nextLine();
                     res1 = processBackspace(res);
@@ -379,6 +397,7 @@ public class MainController {
         back = true;
 
         while(back) {
+            consoleView.getConsole().setCountTo0();
             ConsoleView.getConsole().clear();
             System.out.println("Choose task to delete:");
             menu.show();
@@ -414,11 +433,11 @@ public class MainController {
                     System.out.println(task.toString());
                     System.out.println();
                 }
-
             }
             else {
                 System.out.println("No tasks in your list yet");
             }
+            consoleView.getConsole().setCountTo0();
             menu.show();
         }
     }
@@ -431,6 +450,7 @@ public class MainController {
         String res1;
         String warning = "Enter start in format \"yyyy-MM-dd HH:mm\":";
         do {
+            consoleView.getConsole().setCountTo0();
             System.out.println(warning);
             res = scanner.nextLine();
             res1 = processBackspace(res);
@@ -445,6 +465,7 @@ public class MainController {
 
         warning = "Enter end in format \"yyyy-MM-dd HH:mm\":";
         do {
+            consoleView.getConsole().setCountTo0();
             System.out.println(warning);
             res = scanner.nextLine();
             res1 = processBackspace(res);
@@ -472,6 +493,7 @@ public class MainController {
             else {
                 System.out.println("No tasks for: " + start.toString() + " - " + end.toString());
             }
+            consoleView.getConsole().setCountTo0();
             menu.show();
         }
     }
@@ -481,17 +503,21 @@ public class MainController {
         Menu menu = new Menu(ConsoleView.getConsole());
         menu.add("Back", new MenuCallback() { public void Invoke() { backHandler3(); } });
         while(back3) {
+            consoleView.getConsole().setCountTo0();
             ConsoleView.getConsole().clear();
             for(Task task: set){
                 System.out.println(task.toString());
             }
+            consoleView.getConsole().setCountTo0();
             menu.show();
         }
     }
 
-    public static void newFileTaskHandler(Menu menu ){
+    public static void newFileTaskHandler(Menu menu){
         System.out.println("Enter name of new file:");
-        String name = scanner.nextLine();
+        consoleView.getConsole().setCountTo0();
+        String res = scanner.nextLine();
+        String name = processBackspace(res);
         file = new File(name + ".txt");
         menu.clear();
         menu.add("Add new task", new MenuCallback() { public void Invoke() { MainController.addTaskHandler(); } });

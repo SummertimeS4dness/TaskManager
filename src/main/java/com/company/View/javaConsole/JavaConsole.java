@@ -31,8 +31,9 @@ public class JavaConsole extends WindowAdapter implements WindowListener, Action
 	private Thread reader;
 	private Thread reader2;
 	private boolean quit;
-					
-	private final PipedInputStream pin=new PipedInputStream(); 
+	private int count = 0;
+
+    private final PipedInputStream pin=new PipedInputStream();
 	private final PipedInputStream pin2=new PipedInputStream();
 	private final PipedOutputStream pout3=new PipedOutputStream(); //DWM 02-07-2012
 
@@ -117,9 +118,21 @@ public class JavaConsole extends WindowAdapter implements WindowListener, Action
 
         textArea.addKeyListener(new KeyListener() {
 
-            public void keyPressed(KeyEvent e) {}
+            public void keyPressed(KeyEvent e) {
+                if(e.getKeyChar() == '\b'){
+                    if(count > 0)
+                        count--;
+                    else
+                        textArea.getInputMap().put(KeyStroke.getKeyStroke("BACK_SPACE"), "none");
+                }
+                else{
+                    count++;
+                }
+            }
 
-            public void keyReleased(KeyEvent e) {}
+            public void keyReleased(KeyEvent e) {
+                textArea.getInputMap().remove(KeyStroke.getKeyStroke("BACK_SPACE"));
+            }
 
             public void keyTyped(KeyEvent e)  {
                 try { pout3.write(e.getKeyChar()); } catch (IOException ex) {}
@@ -141,6 +154,10 @@ public class JavaConsole extends WindowAdapter implements WindowListener, Action
 	public void setLabel(String a){
 		label.setText("Your on-line task: " + a);
 	}
+
+    public void setCountTo0() {
+        count = 0;
+    }
 	/* (non-Javadoc)
 	 * @see java.awt.event.WindowAdapter#windowClosed(java.awt.event.WindowEvent)
 	 */
