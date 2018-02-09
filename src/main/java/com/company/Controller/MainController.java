@@ -7,6 +7,8 @@ import com.company.View.menu.MenuCallback;
 
 import javax.swing.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -32,9 +34,14 @@ public class MainController {
     public static ArrayTaskList getArrayTaskList() {
         return arrayTaskList;
     }
+    private static String fileName = "";
 
     public static ConsoleView getConsoleView() {
         return consoleView;
+    }
+
+    public static File getFile() {
+        return file;
     }
 
     public static boolean isExit() {
@@ -415,7 +422,6 @@ public class MainController {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
         Map<Date, Set<Task>> calendar = Tasks.calendar(arrayTaskList, start, end);
         for(Map.Entry<Date, Set<Task>> entry: calendar.entrySet()) {
             Set<Task> set = entry.getValue();
@@ -504,9 +510,60 @@ public class MainController {
         }
     }
 
+    public static void continueFileTaskHandler(Menu menu) {
+        try {
+            fileName = new Scanner(new File("lastFile.txt")).useDelimiter("\\Z").next();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        file = new File(fileName);
+        if(file != null) {
+            TaskIO.readText(arrayTaskList, file);
+            for(Task task: arrayTaskList){
+                taskControllers.add(new TaskController(task));
+            }
+            menu.clear();
+            menu.add("Add new task", new MenuCallback() {
+                public void Invoke() {
+                    MainController.addTaskHandler();
+                }
+            });
+            menu.add("Edit task", new MenuCallback() {
+                public void Invoke() {
+                    MainController.editTaskHandler();
+                }
+            });
+            menu.add("Delete task", new MenuCallback() {
+                public void Invoke() {
+                    MainController.deleteTaskHandler();
+                }
+            });
+            menu.add("Task list", new MenuCallback() {
+                public void Invoke() {
+                    MainController.listTaskHandler();
+                }
+            });
+            menu.add("Calendar", new MenuCallback() {
+                public void Invoke() {
+                    MainController.calendarTaskHandler();
+                }
+            });
+            menu.add("Exit", new MenuCallback() {
+                public void Invoke() {
+                    MainController.exitHandler();
+                }
+            });
+        }
+    }
+
     public static void exit() {
         if(arrayTaskList != null && file != null) {
             TaskIO.writeText(arrayTaskList, file);
+        }
+        try(PrintWriter out = new PrintWriter("lastFile.txt")  ){
+            out.println(file.getName());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         }
         logger.info("Session ended");
     }

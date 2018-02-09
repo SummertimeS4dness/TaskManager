@@ -1,12 +1,13 @@
 package com.company.View.javaConsole;
 
+import com.company.Controller.MainController;
+import com.company.Model.TaskIO;
+
 import javax.swing.*;
+import javax.swing.text.Caret;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.IOException;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
-import java.io.PrintStream;
+import java.io.*;
 
 /**
  * @brief A simple Java Console for your application (Swing version).
@@ -26,7 +27,7 @@ import java.io.PrintStream;
 public class JavaConsole extends WindowAdapter implements WindowListener, ActionListener, Runnable
 {
 	private JFrame frame;
-	private JTextArea textArea;
+	public JTextArea textArea;
 	private Thread reader;
 	private Thread reader2;
 	private boolean quit;
@@ -48,9 +49,6 @@ public class JavaConsole extends WindowAdapter implements WindowListener, Action
 		int x=(int)(frameSize.width/2);
 		int y=(int)(frameSize.height/2);
 		frame.setBounds(x,y,frameSize.width,frameSize.height);
-		/*frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-		frame.setUndecorated(true);
-		frame.setVisible(true);*/
 		textArea=new JTextArea();
 		textArea.setCaret(new BlockCaret()); //DWM 02-07-2012
 		textArea.setBackground(Color.black); //DWM 02-07-2012
@@ -60,12 +58,10 @@ public class JavaConsole extends WindowAdapter implements WindowListener, Action
 		textArea.setLineWrap(true); //DWM 02-07-2012
 		textArea.setWrapStyleWord(true); //DWM 02-07-2012
 		textArea.setEditable(true); //DWM 02-07-2012
-		//JButton button = new JButton("clear");
 		label = new JLabel("");
 
 		frame.getContentPane().setLayout(new BorderLayout());
 		frame.getContentPane().add(new JScrollPane(textArea),BorderLayout.CENTER);
-		//frame.getContentPane().add(button,BorderLayout.SOUTH);
 		frame.getContentPane().add(label,BorderLayout.SOUTH);
 		frame.setVisible(true);		
 		
@@ -118,16 +114,16 @@ public class JavaConsole extends WindowAdapter implements WindowListener, Action
 			textArea.append("Couldn't redirect STDIN to this console\n"+se.getMessage());
 			textArea.setCaretPosition(textArea.getDocument().getLength()); //DWM 02-07-2012
 	    }
-				
-		textArea.addKeyListener(new KeyListener() {
 
-			public void keyPressed(KeyEvent e) {}
+        textArea.addKeyListener(new KeyListener() {
 
-			public void keyReleased(KeyEvent e) {}
+            public void keyPressed(KeyEvent e) {}
 
-			public void keyTyped(KeyEvent e)  {
-					try { pout3.write(e.getKeyChar()); } catch (IOException ex) {}
-			}}); //DWM 02-07-2012
+            public void keyReleased(KeyEvent e) {}
+
+            public void keyTyped(KeyEvent e)  {
+                try { pout3.write(e.getKeyChar()); } catch (IOException ex) {}
+            }}); //DWM 02-07-2012
 			
 		quit=false; // signals the Threads that they should exit
 				
@@ -141,6 +137,7 @@ public class JavaConsole extends WindowAdapter implements WindowListener, Action
 		reader2.start();
 				
 	}
+
 	public void setLabel(String a){
 		label.setText("Your on-line task: " + a);
 	}
@@ -150,6 +147,14 @@ public class JavaConsole extends WindowAdapter implements WindowListener, Action
 	public synchronized void windowClosed(WindowEvent evt)
 	{
 		quit=true;
+        if(MainController.getArrayTaskList()!= null && MainController.getFile() != null) {
+            TaskIO.writeText(MainController.getArrayTaskList(), MainController.getFile());
+        }
+        try(PrintWriter out = new PrintWriter("lastFile.txt")  ){
+            out.println(MainController.getFile().getName());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
 		this.notifyAll(); // stop all threads
 		try { reader.join(1000);pin.close();   } catch (Exception e){}		
 		try { reader2.join(1000);pin2.close(); } catch (Exception e){}

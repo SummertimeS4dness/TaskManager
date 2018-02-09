@@ -245,7 +245,7 @@ public class TaskIO {
         }
     }
 
-    public static String calculateTime(long time1) {
+    public static String calculateTime(int time1) {
         long time  = time1 / 1000;
         int days = (int) TimeUnit.SECONDS.toDays(time);
         long hours = TimeUnit.SECONDS.toHours(time) - TimeUnit.DAYS.toHours(days);
