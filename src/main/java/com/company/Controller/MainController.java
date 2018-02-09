@@ -427,16 +427,18 @@ public class MainController {
         Menu menu = new Menu(ConsoleView.getConsole());
         Date start = null;
         Date end = null;
-        String string;
+        String res;
+        String res1;
         String warning = "Enter start in format \"yyyy-MM-dd HH:mm\":";
         do {
             System.out.println(warning);
-            string = scanner.nextLine();
+            res = scanner.nextLine();
+            res1 = processBackspace(res);
             warning = "Error in your input, enter start in format \"yyyy-MM-dd HH:mm\" again:";
-        } while (!dateValidator(string));
+        } while (!dateValidator(res1));
 
         try {
-            start = dateFormat.parse(string);
+            start = dateFormat.parse(res1);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -444,12 +446,13 @@ public class MainController {
         warning = "Enter end in format \"yyyy-MM-dd HH:mm\":";
         do {
             System.out.println(warning);
-            string = scanner.nextLine();
+            res = scanner.nextLine();
+            res1 = processBackspace(res);
             warning = "Error in your input, enter end in format \"yyyy-MM-dd HH:mm\" again:";
-        } while (!dateValidator(string));
+        } while (!dateValidator(res1));
 
         try {
-            end = dateFormat.parse(string);
+            end = dateFormat.parse(res1);
         } catch (ParseException e) {
             e.printStackTrace();
         }
