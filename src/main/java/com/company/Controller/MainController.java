@@ -392,10 +392,15 @@ public class MainController {
 
         while(back) {
             ConsoleView.getConsole().clear();
-            System.out.println("Your tasks:");
-            for(Task task: arrayTaskList) {
-                System.out.println(task.toString());
-                System.out.println();
+            if (arrayTaskList.size() != 0){
+                System.out.println("Your tasks:");
+                for (Task task : arrayTaskList) {
+                    System.out.println(task.toString());
+                    System.out.println();
+                }
+            }
+            else {
+                System.out.println("No tasks in your list yet");
             }
             menu.show();
         }
@@ -437,7 +442,12 @@ public class MainController {
 
         while(back) {
             ConsoleView.getConsole().clear();
-            System.out.println("Your tasks for: " + start.toString() + " - " + end.toString());
+            if(calendar.size() != 0) {
+                System.out.println("Your tasks for: " + start.toString() + " - " + end.toString());
+            }
+            else {
+                System.out.println("No tasks for: " + start.toString() + " - " + end.toString());
+            }
             menu.show();
         }
     }
