@@ -111,13 +111,13 @@ public class MainController {
         String warning;
         Date start = new Date();
         Date end = new Date();
-
+        long interval;
         consoleView.getConsole().setCountTo0();
         System.out.println("Enter title:");
         res = scanner.nextLine();
         title = processBackspace(res);
-        warning = "Enter start time in format \"yyyy-MM-dd HH:mm\":";
         consoleView.getConsole().setCountTo0();
+        warning = "Enter start time in format \"yyyy-MM-dd HH:mm\":";
         do {
             consoleView.getConsole().setCountTo0();
             System.out.println(warning);
@@ -147,14 +147,14 @@ public class MainController {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
         consoleView.getConsole().setCountTo0();
-        int interval;
         while (true) {
             try {
                 System.out.println("Enter interval in minutes:");
                 consoleView.getConsole().setCountTo0();
-                interval = Integer.parseInt(scanner.nextLine());
+                res = scanner.nextLine();
+                dateStr = processBackspace(res);
+                interval = Long.parseLong(dateStr);
                 break;
             } catch (NumberFormatException nfe) {
                 System.out.print("Error in your input, interval in minutes again: ");
@@ -228,10 +228,12 @@ public class MainController {
             menu1.add("End", new MenuCallback() { public void Invoke() { editingOfCharacteristicHandler(3, menu); } });
             menu1.add("Interval", new MenuCallback() { public void Invoke() { editingOfCharacteristicHandler(4, menu); } });
             menu1.add("Active", new MenuCallback() { public void Invoke() { editingOfCharacteristicHandler(5, menu); } });
+            menu1.add("Type", new MenuCallback() { public void Invoke() { editingOfCharacteristicHandler(7, menu); } });
         } else {
             menu1.add("Title", new MenuCallback() { public void Invoke() { editingOfCharacteristicHandler(1, menu); } });
             menu1.add("Time", new MenuCallback() { public void Invoke() { editingOfCharacteristicHandler(6, menu); } });
             menu1.add("Active", new MenuCallback() { public void Invoke() { editingOfCharacteristicHandler(5, menu); } });
+            menu1.add("Type", new MenuCallback() { public void Invoke() { editingOfCharacteristicHandler(7, menu); } });
         }
         menu1.add("Back", new MenuCallback() { public void Invoke() { backHandler1(); } });
         back1 = true;
@@ -247,8 +249,11 @@ public class MainController {
         String res;
         String res1;
         String warning;
-        int interval;
+        String dateStr;
+        long interval;
         Date date = new Date();
+        Date start = new Date();
+        Date end = new Date();
         Task task =  arrayTaskList.getTask(taskNumber - 1);
         ArrayList<Timer> timers = TaskController.getTasksToDo().get(task.getTitle());
         boolean active = true;
@@ -315,10 +320,13 @@ public class MainController {
                 TaskController.getTasksToDo().remove(task.getTitle());
                 break;
             case 4:
-                System.out.println("Enter new interval in minutes:");
                 while (true) {
                     try {
-                        interval = Integer.parseInt(scanner.nextLine());
+                        System.out.println("Enter new interval in minutes:");
+                        consoleView.getConsole().setCountTo0();
+                        res = scanner.nextLine();
+                        dateStr = processBackspace(res);
+                        interval = Long.parseLong(dateStr);
                         break;
                     } catch (NumberFormatException e) {
                         System.out.print("Error in your input, enter new interval in minutes again:");
@@ -379,6 +387,84 @@ public class MainController {
                 TaskController.getTasksToDo().get(task.getTitle()).clear();
                 TaskController.getTasksToDo().remove(task.getTitle());
                 break;
+            case 7:
+                if(task.isRepeated()){
+                    System.out.println("New type: non-repeated.");
+                    consoleView.getConsole().setCountTo0();
+                    warning = "Enter time in format \"yyyy-MM-dd HH:mm\":";
+                    do {
+                        consoleView.getConsole().setCountTo0();
+                        System.out.println(warning);
+                        res = scanner.nextLine();
+                        dateStr = processBackspace(res);
+                        warning = "Error in your input, enter time in format \"yyyy-MM-dd HH:mm\" again:";
+                    } while (!dateValidator(dateStr));
+
+                    try {
+                        date = dateFormat.parse(dateStr);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    task.setTime(date);
+                    back = false;
+                }
+                else {
+                    System.out.println("New type: repeated.");
+                    consoleView.getConsole().setCountTo0();
+                    warning = "Enter start time in format \"yyyy-MM-dd HH:mm\":";
+                    do {
+                        consoleView.getConsole().setCountTo0();
+                        System.out.println(warning);
+                        res = scanner.nextLine();
+                        dateStr = processBackspace(res);
+                        warning = "Error in your input, enter start time in format \"yyyy-MM-dd HH:mm\" again:";
+                    } while (!dateValidator(dateStr));
+
+                    try {
+                        start = dateFormat.parse(dateStr);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+
+                    consoleView.getConsole().setCountTo0();
+                    warning = "Enter end time in format \"yyyy-MM-dd HH:mm\":";
+                    do {
+                        consoleView.getConsole().setCountTo0();
+                        System.out.println(warning);
+                        res = scanner.nextLine();
+                        dateStr = processBackspace(res);
+                        warning = "Error in your input, enter end time in format \"yyyy-MM-dd HH:mm\" again:";
+                    } while (!dateValidator(dateStr));
+
+                    try {
+                        end = dateFormat.parse(dateStr);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+
+                    consoleView.getConsole().setCountTo0();
+                    while (true) {
+                        try {
+                            System.out.println("Enter interval in minutes:");
+                            consoleView.getConsole().setCountTo0();
+                            res = scanner.nextLine();
+                            dateStr = processBackspace(res);
+                            interval = Long.parseLong(dateStr);
+                            break;
+                        } catch (NumberFormatException nfe) {
+                            System.out.print("Error in your input, interval in minutes again: ");
+                        }
+                    }
+                    task.setTime(start, end, interval * 60000);
+                    back = false;
+                }
+                TaskController.getTasksToDo().get(task.getTitle()).clear();
+                TaskController.getTasksToDo().remove(task.getTitle());
+                for(Timer timer: timers){
+                    timer.cancel();
+                    timer.purge();
+                }
+                taskControllers.add(new TaskController(task));
             default:
                 break;
         }
@@ -622,18 +708,18 @@ public class MainController {
     }
 
     public static void exit() {
-        if(arrayTaskList != null && file != null) {
+        if (arrayTaskList != null && file != null) {
             TaskIO.writeText(arrayTaskList, file);
-        }
-        try(PrintWriter out = new PrintWriter("lastFile.txt")  ){
-            out.println(file.getName());
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            try (PrintWriter out = new PrintWriter("lastFile.txt")) {
+                out.println(file.getName());
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
         }
         logger.info("Session ended");
     }
 
-    private static String processBackspace(String input) {
+    public static String processBackspace(String input) {
         StringBuilder sb = new StringBuilder();
         for (char c : input.toCharArray()) {
             if (c == '\b') {

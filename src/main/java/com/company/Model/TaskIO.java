@@ -21,7 +21,7 @@ public class TaskIO {
                 } else {
                     output.writeInt(0);
                 }
-                output.writeInt(task.getRepeatInterval());
+                output.writeLong(task.getRepeatInterval());
                 if (task.isRepeated()) {
                     output.writeLong(task.getStartTime().getTime());
                     output.writeLong(task.getEndTime().getTime());
@@ -245,7 +245,7 @@ public class TaskIO {
         }
     }
 
-    public static String calculateTime(int time1) {
+    public static String calculateTime(long time1) {
         long time  = time1 / 1000;
         int days = (int) TimeUnit.SECONDS.toDays(time);
         long hours = TimeUnit.SECONDS.toHours(time) - TimeUnit.DAYS.toHours(days);

@@ -8,7 +8,7 @@ public class Task implements Cloneable {
     private Date time;
     private Date start;
     private Date end;
-    private int interval;
+    private long interval;
     private boolean active;
     private boolean repeated;
     private Task next;
@@ -45,7 +45,7 @@ public class Task implements Cloneable {
         this.end = new Date(end.getTime());
     }
 
-    public void setInterval(int interval) {
+    public void setInterval(long interval) {
         this.interval = interval;
     }
     public void setNextForRemove(Task next) {
@@ -62,7 +62,7 @@ public class Task implements Cloneable {
         active = true;
     }
 
-    public Task(String title, Date start, Date end, int interval) {
+    public Task(String title, Date start, Date end, long interval) {
         this.title = title;
         this.start = new Date(start.getTime());
         this.end = new Date(end.getTime());
@@ -110,14 +110,14 @@ public class Task implements Cloneable {
         interval = 0;
     }
 
-    public int getRepeatInterval() {
+    public long getRepeatInterval() {
         if (!isRepeated()) {
             return 0;
         } else {
             return interval;
         }
     }
-    public void setTime(Date start, Date end, int interval) {
+    public void setTime(Date start, Date end, long interval) {
         repeated = true;
         this.start = new Date(start.getTime());
         this.end = new Date(end.getTime());
@@ -202,7 +202,7 @@ public class Task implements Cloneable {
         result = 31 * result + (time != null ? time.hashCode() : 0);
         result = 31 * result + (start != null ? start.hashCode() : 0);
         result = 31 * result + (end != null ? end.hashCode() : 0);
-        result = 31 * result + interval;
+        result = 31 * result + (int)interval;
         result = 31 * result + (active ? 1 : 0);
         result = 31 * result + (repeated ? 1 : 0);
         result = 31 * result + (next != null ? next.hashCode() : 0);
