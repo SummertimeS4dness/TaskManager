@@ -165,13 +165,13 @@ public class JavaConsole extends WindowAdapter implements WindowListener, Action
 	{
 		quit=true;
         if(MainController.getArrayTaskList()!= null && MainController.getFile() != null) {
-            TaskIO.writeText(MainController.getArrayTaskList(), MainController.getFile());
-        }
-        try(PrintWriter out = new PrintWriter("lastFile.txt")  ){
-            out.println(MainController.getFile().getName());
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+			TaskIO.writeText(MainController.getArrayTaskList(), MainController.getFile());
+			try (PrintWriter out = new PrintWriter("lastFile.txt")) {
+				out.println(MainController.getFile().getName());
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
+		}
 		this.notifyAll(); // stop all threads
 		try { reader.join(1000);pin.close();   } catch (Exception e){}		
 		try { reader2.join(1000);pin2.close(); } catch (Exception e){}
@@ -260,7 +260,7 @@ public class JavaConsole extends WindowAdapter implements WindowListener, Action
 	 */
 	public void clear() //DWM 02-07-2012
 	{
-		textArea.setText("");
+		textArea.setText("To close the program, type \"exit\" or use option in main menu.\n");
 	}
 	
 	/**
