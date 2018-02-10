@@ -5,13 +5,10 @@ import com.company.View.javaConsole.JavaConsole;
 import com.company.View.menu.Menu;
 import com.company.View.menu.MenuCallback;
 
-import java.awt.*;
-
 public class ConsoleView {
 
     private static JavaConsole console;
     private static Menu menu;
-    private static Menu addMenu;
 
     public ConsoleView() {
         console = new JavaConsole();
@@ -19,6 +16,7 @@ public class ConsoleView {
         menu = new Menu(console);
         menu.add("New file", new MenuCallback() { public void Invoke() { MainController.newFileTaskHandler(menu); } });
         menu.add("Existing file", new MenuCallback() { public void Invoke() { MainController.existingFileTaskHandler(menu); } });
+        menu.add("Continue last file", new MenuCallback() { public void Invoke() { MainController.continueFileTaskHandler(menu); } });
         menu.add("Exit", new MenuCallback() { public void Invoke() { MainController.exitHandler(); } });
     }
 
@@ -30,10 +28,6 @@ public class ConsoleView {
         }
         MainController.exit();
         System.exit(0);
-    }
-
-    public static Menu getAddMenu() {
-        return addMenu;
     }
 
     public static JavaConsole getConsole() {
