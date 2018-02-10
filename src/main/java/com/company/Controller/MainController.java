@@ -707,6 +707,16 @@ public class MainController {
         taskControllers = new ArrayList<>();
         arrayTaskList = new ArrayTaskList();
         logger.info("Session started");
-        consoleView.run();
+        consoleView.getMenu().add("New file", new MenuCallback() { public void Invoke() { newFileTaskHandler(consoleView.getMenu()); } });
+        consoleView.getMenu().add("Existing file", new MenuCallback() { public void Invoke() { existingFileTaskHandler(consoleView.getMenu()); } });
+        consoleView.getMenu().add("Continue last file", new MenuCallback() { public void Invoke() { continueFileTaskHandler(consoleView.getMenu()); } });
+        consoleView.getMenu().add("Exit", new MenuCallback() { public void Invoke() { exitHandler(); } });
+        while(MainController.isExit()) {
+            consoleView.getConsole().clear();
+            System.out.println("Please choose an option:");
+            consoleView.getMenu().show();
+        }
+        MainController.exit();
+        System.exit(0);
     }
 }
