@@ -40,7 +40,7 @@ public class JavaConsole extends WindowAdapter implements WindowListener, Action
 	/**
 	 * @brief Class Constructor
 	 */
-	JLabel label;
+	private JLabel label;
 	public JavaConsole()
 	{
 		// create all components and add them
