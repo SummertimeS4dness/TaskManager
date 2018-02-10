@@ -21,8 +21,6 @@ public class MainController {
     private static boolean exit = true;
     private static boolean back = true;
     private static boolean back1 = true;
-    private static boolean back2 = true;
-    private static boolean back3 = true;
     private static int taskNumber;
     private static Scanner scanner;
     private static DateFormat dateFormat;
@@ -78,14 +76,6 @@ public class MainController {
         back1 = false;
     }
 
-    public static void backHandler2(){
-        back2 = false;
-    }
-
-    public static void backHandler3(){
-        back3 = false;
-    }
-
     public static void addTaskHandler(){
         Menu menu = new Menu(ConsoleView.getConsole());
 
@@ -102,7 +92,7 @@ public class MainController {
         }
     }
 
-    public static void repeatedTaskHandler(){
+    private static void repeatedTaskHandler(){
         Task task = null;
         task = new Task("1", new Date(), new Date(), 0);
         String dateStr;
@@ -235,10 +225,10 @@ public class MainController {
             menu1.add("Active", new MenuCallback() { public void Invoke() { editingOfCharacteristicHandler(5, menu); } });
             menu1.add("Type", new MenuCallback() { public void Invoke() { editingOfCharacteristicHandler(7, menu); } });
         }
-        menu1.add("Back", new MenuCallback() { public void Invoke() { backHandler1(); } });
-        back1 = true;
+        menu1.add("Back", new MenuCallback() { public void Invoke() { backHandler(); } });
+        back = true;
 
-        while(back1) {
+        while(back) {
             ConsoleView.getConsole().clear();
             System.out.println("Choose characteristic to edit:");
             menu1.show();
@@ -585,10 +575,10 @@ public class MainController {
     }
 
     private static void dates(Set<Task> set) {
-        back3 = true;
+        back1 = true;
         Menu menu = new Menu(ConsoleView.getConsole());
-        menu.add("Back", new MenuCallback() { public void Invoke() { backHandler3(); } });
-        while(back3) {
+        menu.add("Back", new MenuCallback() { public void Invoke() { backHandler1(); } });
+        while(back1) {
             consoleView.getConsole().setCountTo0();
             ConsoleView.getConsole().clear();
             for(Task task: set){
