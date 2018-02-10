@@ -606,12 +606,13 @@ public class MainController {
         String name = processBackspace(res);
         file = new File(name + ".txt");
         menu.clear();
-        menu.add("Add new task", new MenuCallback() { public void Invoke() { MainController.addTaskHandler(); } });
-        menu.add("Edit task", new MenuCallback() { public void Invoke() { MainController.editTaskHandler(); } });
-        menu.add("Delete task", new MenuCallback() { public void Invoke() { MainController.deleteTaskHandler(); } });
-        menu.add("Task list", new MenuCallback() { public void Invoke() { MainController.listTaskHandler(); } });
-        menu.add("Calendar", new MenuCallback() { public void Invoke() { MainController.calendarTaskHandler(); } });
-        menu.add("Exit", new MenuCallback() { public void Invoke() { MainController.exitHandler(); } });
+        menu.add("Add new task", new MenuCallback() { public void Invoke() { addTaskHandler(); } });
+        menu.add("Edit task", new MenuCallback() { public void Invoke() { editTaskHandler(); } });
+        menu.add("Delete task", new MenuCallback() { public void Invoke() { deleteTaskHandler(); } });
+        menu.add("Task list", new MenuCallback() { public void Invoke() { listTaskHandler(); } });
+        menu.add("Calendar", new MenuCallback() { public void Invoke() { calendarTaskHandler(); } });
+        menu.add("Save list to file", new MenuCallback() { public void Invoke() { saveToFileHandler(); } });
+        menu.add("Exit", new MenuCallback() { public void Invoke() { exitHandler(); } });
     }
 
     public static void existingFileTaskHandler(Menu menu) {
@@ -628,36 +629,13 @@ public class MainController {
                 taskControllers.add(new TaskController(task));
             }
             menu.clear();
-            menu.add("Add new task", new MenuCallback() {
-                public void Invoke() {
-                    MainController.addTaskHandler();
-                }
-            });
-            menu.add("Edit task", new MenuCallback() {
-                public void Invoke() {
-                    MainController.editTaskHandler();
-                }
-            });
-            menu.add("Delete task", new MenuCallback() {
-                public void Invoke() {
-                    MainController.deleteTaskHandler();
-                }
-            });
-            menu.add("Task list", new MenuCallback() {
-                public void Invoke() {
-                    MainController.listTaskHandler();
-                }
-            });
-            menu.add("Calendar", new MenuCallback() {
-                public void Invoke() {
-                    MainController.calendarTaskHandler();
-                }
-            });
-            menu.add("Exit", new MenuCallback() {
-                public void Invoke() {
-                    MainController.exitHandler();
-                }
-            });
+            menu.add("Add new task", new MenuCallback() { public void Invoke() { addTaskHandler(); } });
+            menu.add("Edit task", new MenuCallback() { public void Invoke() { editTaskHandler(); } });
+            menu.add("Delete task", new MenuCallback() { public void Invoke() { deleteTaskHandler(); } });
+            menu.add("Task list", new MenuCallback() { public void Invoke() { listTaskHandler(); } });
+            menu.add("Calendar", new MenuCallback() { public void Invoke() { calendarTaskHandler(); } });
+            menu.add("Save list to file", new MenuCallback() { public void Invoke() { saveToFileHandler(); } });
+            menu.add("Exit", new MenuCallback() { public void Invoke() { exitHandler(); } });
         }
     }
 
@@ -674,36 +652,13 @@ public class MainController {
                 taskControllers.add(new TaskController(task));
             }
             menu.clear();
-            menu.add("Add new task", new MenuCallback() {
-                public void Invoke() {
-                    MainController.addTaskHandler();
-                }
-            });
-            menu.add("Edit task", new MenuCallback() {
-                public void Invoke() {
-                    MainController.editTaskHandler();
-                }
-            });
-            menu.add("Delete task", new MenuCallback() {
-                public void Invoke() {
-                    MainController.deleteTaskHandler();
-                }
-            });
-            menu.add("Task list", new MenuCallback() {
-                public void Invoke() {
-                    MainController.listTaskHandler();
-                }
-            });
-            menu.add("Calendar", new MenuCallback() {
-                public void Invoke() {
-                    MainController.calendarTaskHandler();
-                }
-            });
-            menu.add("Exit", new MenuCallback() {
-                public void Invoke() {
-                    MainController.exitHandler();
-                }
-            });
+            menu.add("Add new task", new MenuCallback() { public void Invoke() { addTaskHandler(); } });
+            menu.add("Edit task", new MenuCallback() { public void Invoke() { editTaskHandler(); } });
+            menu.add("Delete task", new MenuCallback() { public void Invoke() { deleteTaskHandler(); } });
+            menu.add("Task list", new MenuCallback() { public void Invoke() { listTaskHandler(); } });
+            menu.add("Calendar", new MenuCallback() { public void Invoke() { calendarTaskHandler(); } });
+            menu.add("Save list to file", new MenuCallback() { public void Invoke() { saveToFileHandler(); } });
+            menu.add("Exit", new MenuCallback() { public void Invoke() { exitHandler(); } });
         }
     }
 
@@ -717,6 +672,18 @@ public class MainController {
             }
         }
         logger.info("Session ended");
+    }
+
+    public static void saveToFileHandler() {
+        if (arrayTaskList != null && file != null) {
+            TaskIO.writeText(arrayTaskList, file);
+            try (PrintWriter out = new PrintWriter("lastFile.txt")) {
+                out.println(file.getName());
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+        logger.info("Saved to file \"" + fileName + "\"");
     }
 
     public static String processBackspace(String input) {
