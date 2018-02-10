@@ -260,7 +260,7 @@ public class JavaConsole extends WindowAdapter implements WindowListener, Action
 	 */
 	public void clear() //DWM 02-07-2012
 	{
-		textArea.setText("To close the program, type \"exit\" or use option in main menu.\n");
+		textArea.setText("Welcome to TASK MANAGER.\nTo close the program, type \"exit\" or use option in main menu.\n");
 	}
 	
 	/**
