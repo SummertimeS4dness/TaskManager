@@ -12,9 +12,14 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- * @author David MacDermot
+ * @author Mishchenko Anton
  * @brief A menu system for organizing code in the JavaConsole.
- * @date 02-07-2012
+ *
+ * @history added method for removing menu item
+ *          added method for updating menu
+ *          added method for clearing menu
+ *          fixed backspacing in choosing menu item
+ *          added exit from the program by typing "exit"
  * @bug
  */
 public class Menu {

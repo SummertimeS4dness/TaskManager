@@ -15,12 +15,11 @@ import java.io.*;
  * @par Comments:
  * 		 Original located at http://www.comweb.nl/java/Console/Console.html
  * 
- * @author RJHM van den Bergh , rvdb@comweb.nl
+ * @author Mishchenko Anton
  *
- * @history 02-07-2012 David MacDermot Marked: DWM 02-07-2012
- *           Added KeyListener to pipe text to STDIN.
- *           Added custom block style caret.
- *           Added various other customizations.
+ * @history added label for notifications
+ *          fixed erasing of the menu
+ *          added saving to file in windowClosed(WindowEvent evt)
  * @bug
  */
 
@@ -51,7 +50,6 @@ public class JavaConsole extends WindowAdapter implements WindowListener, Action
 		int y=(int)(frameSize.height/2);
 		frame.setBounds(x,y,frameSize.width,frameSize.height);
 		textArea=new JTextArea();
-		textArea.setCaret(new BlockCaret()); //DWM 02-07-2012
 		textArea.setBackground(Color.black); //DWM 02-07-2012
 		textArea.setForeground(Color.white); //DWM 02-07-2012
 		textArea.setCaretColor(textArea.getForeground()); //DWM 02-07-2012
@@ -66,8 +64,7 @@ public class JavaConsole extends WindowAdapter implements WindowListener, Action
 		frame.getContentPane().add(label,BorderLayout.SOUTH);
 		frame.setVisible(true);		
 		
-		frame.addWindowListener(this);		
-		//button.addActionListener(this);
+		frame.addWindowListener(this);
 		
 		try
 		{
