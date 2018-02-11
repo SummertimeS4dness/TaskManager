@@ -32,7 +32,7 @@ public class ArrayTaskList extends TaskList implements Iterable<Task>, Cloneable
         return false;
     }
 
-    private void remove(int i) {
+    private void remove(int i) throws IndexOutOfBoundsException {
         Task[] copy = new Task[tasks.length - 1];
         System.arraycopy(tasks, 0, copy, 0, i);
         System.arraycopy(tasks, i + 1, copy, i, tasks.length - i - 1);
@@ -80,9 +80,7 @@ public class ArrayTaskList extends TaskList implements Iterable<Task>, Cloneable
         }  catch(CloneNotSupportedException e) {
             e.printStackTrace();
         }
-        /*for (Task task : tasks) {
-            result.add(task.clone());
-        }*/
+
         return result;
     }
 

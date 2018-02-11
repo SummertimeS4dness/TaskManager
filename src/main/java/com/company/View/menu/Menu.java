@@ -7,7 +7,9 @@ import com.company.Model.TaskIO;
 import com.company.View.javaConsole.JavaConsole;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -109,7 +111,7 @@ public class Menu {
     /**
      * @brief Display the list of menu item choices
      */
-    public void show() {
+    public void show() throws IOException, ParseException {
         choosen = 0;
         String a, b;
         Scanner in = new Scanner(System.in);

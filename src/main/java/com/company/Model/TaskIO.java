@@ -1,5 +1,7 @@
 package com.company.Model;
 
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
+
 import java.io.*;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -9,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 
 public class TaskIO {
     private static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-    public static void write(TaskList tasks, OutputStream out) {
+    public static void write(TaskList tasks, OutputStream out) throws IOException {
         DataOutputStream output = new DataOutputStream(out);
         try {
             output.writeInt(tasks.size());
@@ -41,7 +43,7 @@ public class TaskIO {
         }
     }
 
-    public static void read(TaskList tasks, InputStream in) {
+    public static void read(TaskList tasks, InputStream in) throws IOException {
         DataInputStream input = new DataInputStream(in);
         try {
             int size = input.readInt();
@@ -86,7 +88,7 @@ public class TaskIO {
         }
     }
 
-    public static void writeBinary(TaskList tasks, File file) {
+    public static void writeBinary(TaskList tasks, File file) throws IOException{
         try {
             write(tasks, new FileOutputStream(file.getPath()));
         } catch (FileNotFoundException e) {
@@ -94,7 +96,7 @@ public class TaskIO {
         }
     }
 
-    public static void readBinary(TaskList tasks, File file) {
+    public static void readBinary(TaskList tasks, File file) throws IOException{
         try {
             read(tasks, new FileInputStream(file.getPath()));
         } catch (FileNotFoundException e) {
@@ -102,7 +104,7 @@ public class TaskIO {
         }
     }
 
-    public static void write(TaskList tasks, Writer out) {
+    public static void write(TaskList tasks, Writer out) throws IOException{
         BufferedWriter output = new BufferedWriter(out);
         String taskStr = "";
         int size = tasks.size();
@@ -138,7 +140,7 @@ public class TaskIO {
         }
     }
 
-    public static void read(TaskList tasks, Reader in) {
+    public static void read(TaskList tasks, Reader in) throws ParseException, IOException{
         BufferedReader input = new BufferedReader(in);
         String task;
         String title;
@@ -230,14 +232,14 @@ public class TaskIO {
         }
     }
 
-    public static void writeText(TaskList tasks, File file) {
+    public static void writeText(TaskList tasks, File file) throws IOException {
         try {
             write(tasks, new FileWriter(file));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    public static void readText(TaskList tasks, File file) {
+    public static void readText(TaskList tasks, File file) throws ParseException, IOException {
         try {
             read(tasks, new FileReader(file.getPath()));
         } catch (IOException e) {

@@ -1,5 +1,8 @@
 package com.company.View.menu;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.EventListener;
 
 /**
@@ -12,5 +15,5 @@ import java.util.EventListener;
  * @bug
  */
 public interface MenuCallback extends EventListener {
-	public void Invoke(); 
+	public void Invoke() throws IOException, ParseException;
 }

@@ -14,13 +14,13 @@ public class Tasks {
         return incomingTasks;
     }
 
-    public static SortedMap<Date, Set<Task>> calendar(Iterable<Task> tasks, Date start, Date end) {
+    public static SortedMap<Date, Set<Task>> calendar(Iterable<Task> tasks, Date start, Date end) throws NullPointerException {
         SortedMap<Date, Set<Task>> sortedMap = new TreeMap<>();
         try {
             for (Task task : tasks) {
                 ArrayList<Date> dates = new ArrayList<>();
                 Date date = task.nextTimeAfter(start);
-                if (task.isRepeated() && date != null) {
+                if (task.isRepeated() && date != null && date.compareTo(end) <= 0) {
                     for (Date res = new Date(date.getTime()); res.compareTo(task.getEndTime()) <= 0; res.setTime(res.getTime() + task.getRepeatInterval())) {
                         if (sortedMap.get(res) != null) {
                             sortedMap.get(res).add(new Task(task));
