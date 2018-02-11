@@ -4,7 +4,6 @@ import com.company.Controller.MainController;
 import com.company.Model.TaskIO;
 
 import javax.swing.*;
-import javax.swing.text.Caret;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
@@ -163,8 +162,8 @@ public class JavaConsole extends WindowAdapter implements WindowListener, Action
 		quit=true;
         if(MainController.getArrayTaskList()!= null && MainController.getFile() != null) {
 			TaskIO.writeText(MainController.getArrayTaskList(), MainController.getFile());
-			try (PrintWriter out = new PrintWriter("lastFile.txt")) {
-				out.println(MainController.getFile().getName());
+			try (PrintWriter out = new PrintWriter("TaskLists\\lastFile.txt")) {
+				out.println("TaskLists\\" + MainController.getFile().getName());
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			}
@@ -257,7 +256,7 @@ public class JavaConsole extends WindowAdapter implements WindowListener, Action
 	 */
 	public void clear() //DWM 02-07-2012
 	{
-		textArea.setText("Welcome to TASK MANAGER.\nTo close the program, type \"exit\" or use option in main menu.\n");
+		textArea.setText("Welcome to TASK MANAGER.\nTo close the program, type \"exit\" or use option in main menu.\n\n");
 	}
 	
 	/**

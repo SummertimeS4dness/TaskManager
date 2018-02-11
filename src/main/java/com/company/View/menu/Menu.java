@@ -127,7 +127,7 @@ public class Menu {
             if(b.equals("exit")){
                 if(MainController.getArrayTaskList()!= null && MainController.getFile() != null) {
                     TaskIO.writeText(MainController.getArrayTaskList(), MainController.getFile());
-                    try (PrintWriter out = new PrintWriter("lastFile.txt")) {
+                    try (PrintWriter out = new PrintWriter("TaskLists\\lastFile.txt")) {
                         out.println(MainController.getFile().getName());
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();

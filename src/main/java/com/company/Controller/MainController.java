@@ -8,7 +8,9 @@ import com.company.View.menu.MenuCallback;
 import javax.swing.*;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Path;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -594,7 +596,7 @@ public class MainController {
         consoleView.getConsole().setCountTo0();
         String res = scanner.nextLine();
         String name = processBackspace(res);
-        file = new File(name + ".txt");
+        file = new File("TaskLists\\" + name + ".txt");
         menu.clear();
         menu.add("Add new task", new MenuCallback() { public void Invoke() { addTaskHandler(); } });
         menu.add("Edit task", new MenuCallback() { public void Invoke() { editTaskHandler(); } });
@@ -630,32 +632,39 @@ public class MainController {
     }
 
     public static void continueFileTaskHandler(Menu menu) {
-        try {
-            fileName = new Scanner(new File("lastFile.txt")).useDelimiter("\\Z").next();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        file = new File(fileName);
-        if(file != null) {
-            TaskIO.readText(arrayTaskList, file);
-            for(Task task: arrayTaskList){
-                taskControllers.add(new TaskController(task));
+        File f = new File("TaskLists\\lastFile.txt");
+        if(f.exists() && !f.isDirectory()) {
+            try {
+                fileName = new Scanner(f).useDelimiter("\\Z").next();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
             }
-            menu.clear();
-            menu.add("Add new task", new MenuCallback() { public void Invoke() { addTaskHandler(); } });
-            menu.add("Edit task", new MenuCallback() { public void Invoke() { editTaskHandler(); } });
-            menu.add("Delete task", new MenuCallback() { public void Invoke() { deleteTaskHandler(); } });
-            menu.add("Task list", new MenuCallback() { public void Invoke() { listTaskHandler(); } });
-            menu.add("Calendar", new MenuCallback() { public void Invoke() { calendarTaskHandler(); } });
-            menu.add("Save list to file", new MenuCallback() { public void Invoke() { saveToFileHandler(); } });
-            menu.add("Exit", new MenuCallback() { public void Invoke() { exitHandler(); } });
+            file = new File(fileName);
+            if(file != null) {
+                TaskIO.readText(arrayTaskList, file);
+                for(Task task: arrayTaskList){
+                    taskControllers.add(new TaskController(task));
+                }
+                menu.clear();
+                menu.add("Add new task", new MenuCallback() { public void Invoke() { addTaskHandler(); } });
+                menu.add("Edit task", new MenuCallback() { public void Invoke() { editTaskHandler(); } });
+                menu.add("Delete task", new MenuCallback() { public void Invoke() { deleteTaskHandler(); } });
+                menu.add("Task list", new MenuCallback() { public void Invoke() { listTaskHandler(); } });
+                menu.add("Calendar", new MenuCallback() { public void Invoke() { calendarTaskHandler(); } });
+                menu.add("Save list to file", new MenuCallback() { public void Invoke() { saveToFileHandler(); } });
+                menu.add("Exit", new MenuCallback() { public void Invoke() { exitHandler(); } });
+            }
+        }
+        else {
+            menu.remove(2);
+            System.out.println("There is no last file to work");
         }
     }
 
     public static void exit() {
         if (arrayTaskList != null && file != null) {
             TaskIO.writeText(arrayTaskList, file);
-            try (PrintWriter out = new PrintWriter("lastFile.txt")) {
+            try (PrintWriter out = new PrintWriter("TaskLists\\lastFile.txt")) {
                 out.println(file.getName());
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -667,7 +676,7 @@ public class MainController {
     public static void saveToFileHandler() {
         if (arrayTaskList != null && file != null) {
             TaskIO.writeText(arrayTaskList, file);
-            try (PrintWriter out = new PrintWriter("lastFile.txt")) {
+            try (PrintWriter out = new PrintWriter("TaskLists\\lastFile.txt")) {
                 out.println(file.getName());
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -697,6 +706,10 @@ public class MainController {
         taskControllers = new ArrayList<>();
         arrayTaskList = new ArrayTaskList();
         logger.info("Session started");
+        File dir = new File("TaskLists");
+        if(!dir.exists()){
+            new File("TaskLists").mkdir();
+        }
         consoleView.getMenu().add("New file", new MenuCallback() { public void Invoke() { newFileTaskHandler(consoleView.getMenu()); } });
         consoleView.getMenu().add("Existing file", new MenuCallback() { public void Invoke() { existingFileTaskHandler(consoleView.getMenu()); } });
         consoleView.getMenu().add("Continue last file", new MenuCallback() { public void Invoke() { continueFileTaskHandler(consoleView.getMenu()); } });
