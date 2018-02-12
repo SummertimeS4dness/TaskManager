@@ -30,6 +30,10 @@ public class Menu {
     private JavaConsole console;
     private int choosen;
 
+    /**
+     * getter of choosen
+     * @return choosen
+     */
     public int getChoosen() {
         return choosen;
     }
@@ -95,16 +99,27 @@ public class Menu {
         return Items.add(new MenuItem(text, mc));
     }
 
+    /**
+     * for removing MenuItem by index
+     * @param i
+     */
     public void remove(int i) {
         Items.remove(i);
     }
 
+    /**
+     * for updating menu with ArrayTaskList
+     * @param arrayTaskList with tasks for updating
+     */
     public void update(ArrayTaskList arrayTaskList) {
         for (int i = 0; i < arrayTaskList.size(); i++) {
             Items.get(i).set_text(arrayTaskList.getTask(i).toString());
         }
     }
 
+    /**
+     * for clearing menu
+     */
     public void clear() {
         Items.clear();
     }

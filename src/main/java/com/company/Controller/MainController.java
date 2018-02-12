@@ -18,6 +18,14 @@ import java.util.*;
 import java.util.Timer;
 import org.apache.log4j.Logger;
 
+/**
+ * Main controller of TaskManager
+ *
+ * @author MishchenkoAnton
+ *
+ * @version MavenAndLog4j
+ */
+
 public class MainController {
     final static Logger logger = Logger.getLogger(MainController.class);
     private static boolean exit = true;
@@ -26,33 +34,33 @@ public class MainController {
     private static int taskNumber;
     private static Scanner scanner;
     private static DateFormat dateFormat;
-    private static ArrayList<TaskController> taskControllers;
     private static JFileChooser fileopen;
     private static File file;
     private static ArrayTaskList arrayTaskList;
     private static ConsoleView consoleView;
-    public static ArrayTaskList getArrayTaskList() {
-        return arrayTaskList;
-    }
     private static String fileName = "";
 
-    public static ConsoleView getConsoleView() {
-        return consoleView;
-    }
-
+    /**
+     * getter for current file with task list
+     * @return current file with task list
+     */
     public static File getFile() {
         return file;
     }
 
-    public static boolean isExit() {
+    /**
+     * getter for ArrayTaskList with current tasks
+     * @return ArrayTaskList with current tasks
+     */
+    public static ArrayTaskList getArrayTaskList() {
+        return arrayTaskList;
+    }
+
+    private static boolean isExit() {
         return exit;
     }
 
-    public static boolean isBack() {
-        return back;
-    }
-
-    public static boolean dateValidator(String dateToValidate) throws ParseException {
+    private static boolean dateValidator(String dateToValidate) throws ParseException {
         if(dateToValidate == null){
             return false;
         }
@@ -66,19 +74,19 @@ public class MainController {
         return true;
     }
 
-    public static void exitHandler() {
+    private static void exitHandler() {
         exit = false;
     }
 
-    public static void backHandler(){
+    private static void backHandler(){
         back = false;
     }
 
-    public static void backHandler1(){
+    private static void backHandler1(){
         back1 = false;
     }
 
-    public static void addTaskHandler() throws IOException, ParseException {
+    private static void addTaskHandler() throws IOException, ParseException {
         Menu menu = new Menu(ConsoleView.getConsole());
 
         menu.add("Repeated", new MenuCallback() { public void Invoke() throws ParseException { repeatedTaskHandler(); } });
@@ -154,12 +162,11 @@ public class MainController {
         }
         task = new Task(title, start, end, interval * 60000);
         arrayTaskList.add(task);
-        taskControllers.add(new TaskController(task));
         logger.debug("Task added: " + task.toString());
         back = false;
     }
 
-    public static void nonRepeatedTaskHandler() throws ParseException{
+    private static void nonRepeatedTaskHandler() throws ParseException{
         Task task = null;
         task = new Task("1", new Date(), new Date(), 0);
         String res;
@@ -189,12 +196,11 @@ public class MainController {
         }
         task = new Task(title, time);
         arrayTaskList.add(task);
-        taskControllers.add(new TaskController(task));
         logger.debug("Task added: " + task.toString());
         back = false;
     }
 
-    public static void editTaskHandler() throws IOException, ParseException {
+    private static void editTaskHandler() throws IOException, ParseException {
         Menu menu = new Menu(ConsoleView.getConsole());
         for(Task task: arrayTaskList) {
             menu.add(task.toString(), new MenuCallback() { public void Invoke() throws IOException, ParseException { selectionOfCharacteristicHandler(menu); } });
@@ -247,7 +253,6 @@ public class MainController {
         Date start = new Date();
         Date end = new Date();
         Task task =  arrayTaskList.getTask(taskNumber - 1);
-        ArrayList<Timer> timers = TaskController.getTasksToDo().get(task.getTitle());
         boolean active = true;
         consoleView.getConsole().setCountTo0();
         switch (i){
@@ -255,14 +260,7 @@ public class MainController {
                 System.out.println("Enter new title:");
                 res = scanner.nextLine();
                 String title = processBackspace(res);
-                TaskController.getTasksToDo().get(task.getTitle()).clear();
-                TaskController.getTasksToDo().remove(task.getTitle());
                 task.setTitle(title);
-                for(Timer timer: timers){
-                    timer.cancel();
-                    timer.purge();
-                }
-                taskControllers.add(new TaskController(task));
                 break;
             case 2:
                 warning = "Enter new start in format \"yyyy-MM-dd HH:mm\":";
@@ -280,13 +278,6 @@ public class MainController {
                     e.printStackTrace();
                 }
                 task.setStart(date);
-                TaskController.getTasksToDo().get(task.getTitle());
-                for(Timer timer: timers){
-                    timer.cancel();
-                    timer.purge();
-                }
-                TaskController.getTasksToDo().get(task.getTitle()).clear();
-                TaskController.getTasksToDo().remove(task.getTitle());
                 break;
             case 3:
                 warning = "Enter new end in format \"yyyy-MM-dd HH:mm\":";
@@ -304,12 +295,6 @@ public class MainController {
                     e.printStackTrace();
                 }
                 task.setEnd(date);
-                for(Timer timer: timers){
-                    timer.cancel();
-                    timer.purge();
-                }
-                TaskController.getTasksToDo().get(task.getTitle()).clear();
-                TaskController.getTasksToDo().remove(task.getTitle());
                 break;
             case 4:
                 while (true) {
@@ -324,12 +309,6 @@ public class MainController {
                         System.out.print("Error in your input, enter new interval in minutes again:");
                         consoleView.getConsole().setCountTo0();
                     }
-                    for(Timer timer: timers){
-                        timer.cancel();
-                        timer.purge();
-                    }
-                    TaskController.getTasksToDo().get(task.getTitle()).clear();
-                    TaskController.getTasksToDo().remove(task.getTitle());
                 }
                 task.setInterval(interval * 60000);
                 break;
@@ -345,12 +324,6 @@ public class MainController {
                     }
                     else if(res1.equals("false")){
                         active = false;
-                        for(Timer timer: timers){
-                            timer.cancel();
-                            timer.purge();
-                        }
-                        TaskController.getTasksToDo().get(task.getTitle()).clear();
-                        TaskController.getTasksToDo().remove(task.getTitle());
                         break;
                     }
                 }
@@ -372,12 +345,6 @@ public class MainController {
                     e.printStackTrace();
                 }
                 task.setTime(date);
-                for(Timer timer: timers){
-                    timer.cancel();
-                    timer.purge();
-                }
-                TaskController.getTasksToDo().get(task.getTitle()).clear();
-                TaskController.getTasksToDo().remove(task.getTitle());
                 break;
             case 7:
                 if(task.isRepeated()){
@@ -450,13 +417,6 @@ public class MainController {
                     task.setTime(start, end, interval * 60000);
                     back = false;
                 }
-                TaskController.getTasksToDo().get(task.getTitle()).clear();
-                TaskController.getTasksToDo().remove(task.getTitle());
-                for(Timer timer: timers){
-                    timer.cancel();
-                    timer.purge();
-                }
-                taskControllers.add(new TaskController(task));
             default:
                 break;
         }
@@ -466,7 +426,7 @@ public class MainController {
         back1 = false;
     }
 
-    public static void deleteTaskHandler() throws IOException, ParseException {
+    private static void deleteTaskHandler() throws IOException, ParseException {
         Menu menu = new Menu(ConsoleView.getConsole());
         for(Task task: arrayTaskList) {
             menu.add(task.toString(), new MenuCallback() { public void Invoke() { deleteTaskHandler(menu); } });
@@ -486,19 +446,12 @@ public class MainController {
         taskNumber = menu.getChoosen() - 1;
         Task task = arrayTaskList.getTask(taskNumber);
         logger.debug("Task deleted: " + task.toString());
-        ArrayList<Timer> timers = TaskController.getTasksToDo().get(task.getTitle());
-        for(Timer timer: timers){
-            timer.cancel();
-            timer.purge();
-        }
-        TaskController.getTasksToDo().get(task.getTitle()).clear();
-        TaskController.getTasksToDo().remove(task.getTitle());
         arrayTaskList.remove(arrayTaskList.getTask(taskNumber));
         menu.remove(taskNumber);
         back = false;
     }
 
-    public static void listTaskHandler() throws IOException, ParseException {
+    private static void listTaskHandler() throws IOException, ParseException {
         Menu menu = new Menu(ConsoleView.getConsole());
         menu.add("Back", new MenuCallback() { public void Invoke() { backHandler(); } });
         back = true;
@@ -520,7 +473,7 @@ public class MainController {
         }
     }
 
-    public static void calendarTaskHandler() throws ParseException, IOException {
+    private static void calendarTaskHandler() throws ParseException, IOException {
         Menu menu = new Menu(ConsoleView.getConsole());
         Date start = null;
         Date end = null;
@@ -591,7 +544,7 @@ public class MainController {
         }
     }
 
-    public static void newFileTaskHandler(Menu menu){
+    private static void newFileTaskHandler(Menu menu){
         System.out.println("Enter name of new file:");
         consoleView.getConsole().setCountTo0();
         String res = scanner.nextLine();
@@ -607,7 +560,7 @@ public class MainController {
         menu.add("Exit", new MenuCallback() { public void Invoke() { exitHandler(); } });
     }
 
-    public static void existingFileTaskHandler(Menu menu) throws IOException, ParseException {
+    private static void existingFileTaskHandler(Menu menu) throws IOException, ParseException {
         fileopen = new JFileChooser();
         fileopen.setCurrentDirectory(new File("."));
         int ret = fileopen.showDialog(null, "Open file");
@@ -617,9 +570,6 @@ public class MainController {
         }
         if(file != null) {
             TaskIO.readText(arrayTaskList, file);
-            for(Task task: arrayTaskList){
-                taskControllers.add(new TaskController(task));
-            }
             menu.clear();
             menu.add("Add new task", new MenuCallback() { public void Invoke() throws IOException, ParseException { addTaskHandler(); } });
             menu.add("Edit task", new MenuCallback() { public void Invoke() throws IOException, ParseException { editTaskHandler(); } });
@@ -631,7 +581,7 @@ public class MainController {
         }
     }
 
-    public static void continueFileTaskHandler(Menu menu) throws IOException, ParseException {
+    private static void continueFileTaskHandler(Menu menu) throws IOException, ParseException {
         File f = new File("TaskLists\\lastFile.txt");
         if(f.exists() && !f.isDirectory()) {
             try {
@@ -642,9 +592,6 @@ public class MainController {
             file = new File(fileName);
             if(file != null) {
                 TaskIO.readText(arrayTaskList, file);
-                for(Task task: arrayTaskList){
-                    taskControllers.add(new TaskController(task));
-                }
                 menu.clear();
                 menu.add("Add new task", new MenuCallback() { public void Invoke() throws IOException, ParseException { addTaskHandler(); } });
                 menu.add("Edit task", new MenuCallback() { public void Invoke() throws IOException, ParseException { editTaskHandler(); } });
@@ -661,7 +608,7 @@ public class MainController {
         }
     }
 
-    public static void exit() throws IOException {
+    private static void exit() throws IOException {
         if (arrayTaskList != null && file != null) {
             TaskIO.writeText(arrayTaskList, file);
             try (PrintWriter out = new PrintWriter("TaskLists\\lastFile.txt")) {
@@ -673,7 +620,7 @@ public class MainController {
         logger.debug("Session ended");
     }
 
-    public static void saveToFileHandler() throws IOException{
+    private static void saveToFileHandler() throws IOException{
         if (arrayTaskList != null && file != null) {
             TaskIO.writeText(arrayTaskList, file);
             try (PrintWriter out = new PrintWriter("TaskLists\\lastFile.txt")) {
@@ -685,6 +632,11 @@ public class MainController {
         logger.debug("Saved to file \"" + fileName + "\"");
     }
 
+    /**
+     * for removing backspaces from string
+     * @param input string from which you want to remove backspaces
+     * @return input string without backspaces
+     */
     public static String processBackspace(String input) {
         StringBuilder sb = new StringBuilder();
         for (char c : input.toCharArray()) {
@@ -703,7 +655,6 @@ public class MainController {
         consoleView = new ConsoleView();
         scanner = new Scanner(System.in);
         dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        taskControllers = new ArrayList<>();
         arrayTaskList = new ArrayTaskList();
         logger.debug("Session started");
         File dir = new File("TaskLists");

@@ -1,7 +1,5 @@
 package com.company.Model;
 
-import com.company.Controller.MainController;
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import org.apache.log4j.Logger;
 
 import java.io.*;
@@ -11,10 +9,18 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * class TaskIO that contains methods for writing and reading Tasks
+ *
+ * @author MishchenkoAnton
+ *
+ * @version MavenAndLog4j
+ */
+
 public class TaskIO {
     final static Logger logger = Logger.getLogger(TaskIO.class);
     private static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-    public static void write(TaskList tasks, OutputStream out) throws IOException {
+    private static void write(TaskList tasks, OutputStream out) throws IOException {
         DataOutputStream output = new DataOutputStream(out);
         try {
             output.writeInt(tasks.size());
@@ -48,7 +54,7 @@ public class TaskIO {
         }
     }
 
-    public static void read(TaskList tasks, InputStream in) throws IOException {
+    private static void read(TaskList tasks, InputStream in) throws IOException {
         DataInputStream input = new DataInputStream(in);
         try {
             int size = input.readInt();
@@ -95,6 +101,12 @@ public class TaskIO {
         }
     }
 
+    /**
+     * for binary writing from TaskList to file
+     * @param tasks TaskList to write from
+     * @param file to write to
+     * @throws IOException
+     */
     public static void writeBinary(TaskList tasks, File file) throws IOException{
         try {
             write(tasks, new FileOutputStream(file.getPath()));
@@ -104,6 +116,12 @@ public class TaskIO {
         }
     }
 
+    /**
+     * for binary reading from file to TaskList
+     * @param tasks TaskList to read to
+     * @param file to read from
+     * @throws IOException
+     */
     public static void readBinary(TaskList tasks, File file) throws IOException{
         try {
             read(tasks, new FileInputStream(file.getPath()));
@@ -113,7 +131,7 @@ public class TaskIO {
         }
     }
 
-    public static void write(TaskList tasks, Writer out) throws IOException{
+    private static void write(TaskList tasks, Writer out) throws IOException{
         BufferedWriter output = new BufferedWriter(out);
         String taskStr = "";
         int size = tasks.size();
@@ -151,7 +169,7 @@ public class TaskIO {
         }
     }
 
-    public static void read(TaskList tasks, Reader in) throws ParseException, IOException{
+    private static void read(TaskList tasks, Reader in) throws ParseException, IOException{
         BufferedReader input = new BufferedReader(in);
         String task;
         String title;
@@ -248,6 +266,12 @@ public class TaskIO {
         }
     }
 
+    /**
+     * for text writing from TaskList to file
+     * @param tasks TaskList to write from
+     * @param file to write to
+     * @throws IOException
+     */
     public static void writeText(TaskList tasks, File file) throws IOException {
         try {
             write(tasks, new FileWriter(file));
@@ -256,6 +280,14 @@ public class TaskIO {
             logger.error("No such file " + file.getPath(), e);
         }
     }
+
+    /**
+     * for text reading from file to TaskList
+     * @param tasks TaskList to read to
+     * @param file to read from
+     * @throws IOException
+     * @throws ParseException
+     */
     public static void readText(TaskList tasks, File file) throws ParseException, IOException {
         try {
             read(tasks, new FileReader(file.getPath()));
@@ -265,6 +297,11 @@ public class TaskIO {
         }
     }
 
+    /**
+     * for converting time from milliseconds to string
+     * @param time1 milliseconds to convert
+     * @return converted string
+     */
     public static String calculateTime(long time1) {
         long time  = time1 / 1000;
         int days = (int) TimeUnit.SECONDS.toDays(time);

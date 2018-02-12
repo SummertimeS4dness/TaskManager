@@ -154,10 +154,17 @@ public class JavaConsole extends WindowAdapter implements WindowListener, Action
 
 	}
 
-	public void setLabel(String a){
-		label.setText("Your on-line task: " + a);
+    /**
+     * for setting text to label
+     * @param text to set
+     */
+	public void setLabel(String text){
+		label.setText(text);
 	}
 
+    /**
+     * for setting count to zero
+     */
     public void setCountTo0() {
         count = 0;
     }
