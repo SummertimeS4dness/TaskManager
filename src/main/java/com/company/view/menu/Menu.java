@@ -67,8 +67,8 @@ public class Menu {
          * @param mc   an MenuCallback object
          */
         public MenuItem(String text, MenuCallback mc) {
-            mc = mc;
-            text = text;
+            this.mc = mc;
+            this.text = text;
         }
 
         /**
