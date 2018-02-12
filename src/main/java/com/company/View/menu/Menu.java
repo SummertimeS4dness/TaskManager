@@ -5,6 +5,7 @@ import com.company.Model.ArrayTaskList;
 import com.company.Model.Task;
 import com.company.Model.TaskIO;
 import com.company.View.javaConsole.JavaConsole;
+import org.apache.log4j.Logger;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -25,7 +26,7 @@ import java.util.Scanner;
  * @bug
  */
 public class Menu {
-
+    final static Logger logger = Logger.getLogger(Menu.class);
     private JavaConsole console;
     private int choosen;
 
@@ -135,6 +136,7 @@ public class Menu {
                         e.printStackTrace();
                     }
                 }
+                logger.debug("Session ended");
                 System.exit(0);
             }
             choosen = Integer.parseInt(b);

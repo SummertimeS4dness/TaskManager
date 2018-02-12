@@ -2,6 +2,7 @@ package com.company.View.javaConsole;
 
 import com.company.Controller.MainController;
 import com.company.Model.TaskIO;
+import org.apache.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,6 +25,7 @@ import java.io.*;
 
 public class JavaConsole extends WindowAdapter implements WindowListener, ActionListener, Runnable
 {
+    final static Logger logger = Logger.getLogger(JavaConsole.class);
 	private JFrame frame;
 	public JTextArea textArea;
 	private Thread reader;
@@ -172,6 +174,7 @@ public class JavaConsole extends WindowAdapter implements WindowListener, Action
 				e.printStackTrace();
 			}
 		}
+		logger.debug("Session ended");
 		this.notifyAll(); // stop all threads
 		try { reader.join(1000);pin.close();   } catch (Exception e){}		
 		try { reader2.join(1000);pin2.close(); } catch (Exception e){}

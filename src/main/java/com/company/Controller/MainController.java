@@ -155,7 +155,7 @@ public class MainController {
         task = new Task(title, start, end, interval * 60000);
         arrayTaskList.add(task);
         taskControllers.add(new TaskController(task));
-        logger.info("Task added: " + task.toString());
+        logger.debug("Task added: " + task.toString());
         back = false;
     }
 
@@ -190,7 +190,7 @@ public class MainController {
         task = new Task(title, time);
         arrayTaskList.add(task);
         taskControllers.add(new TaskController(task));
-        logger.info("Task added: " + task.toString());
+        logger.debug("Task added: " + task.toString());
         back = false;
     }
 
@@ -461,7 +461,7 @@ public class MainController {
                 break;
         }
         menu.update(arrayTaskList);
-        logger.info("Task edited: " + task.toString());
+        logger.debug("Task edited: " + task.toString());
         back = false;
         back1 = false;
     }
@@ -485,7 +485,7 @@ public class MainController {
     private static void deleteTaskHandler(Menu menu) {
         taskNumber = menu.getChoosen() - 1;
         Task task = arrayTaskList.getTask(taskNumber);
-        logger.info("Task deleted: " + task.toString());
+        logger.debug("Task deleted: " + task.toString());
         ArrayList<Timer> timers = TaskController.getTasksToDo().get(task.getTitle());
         for(Timer timer: timers){
             timer.cancel();
@@ -670,7 +670,7 @@ public class MainController {
                 e.printStackTrace();
             }
         }
-        logger.info("Session ended");
+        logger.debug("Session ended");
     }
 
     public static void saveToFileHandler() throws IOException{
@@ -682,7 +682,7 @@ public class MainController {
                 e.printStackTrace();
             }
         }
-        logger.info("Saved to file \"" + fileName + "\"");
+        logger.debug("Saved to file \"" + fileName + "\"");
     }
 
     public static String processBackspace(String input) {
@@ -705,7 +705,7 @@ public class MainController {
         dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         taskControllers = new ArrayList<>();
         arrayTaskList = new ArrayTaskList();
-        logger.info("Session started");
+        logger.debug("Session started");
         File dir = new File("TaskLists");
         if(!dir.exists()){
             new File("TaskLists").mkdir();
