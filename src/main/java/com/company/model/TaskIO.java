@@ -1,6 +1,4 @@
-package com.company.Model;
-
-import org.apache.log4j.Logger;
+package com.company.model;
 
 import java.io.*;
 import java.text.DateFormat;
@@ -8,18 +6,19 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
+import org.apache.log4j.Logger;
 
 /**
- * class TaskIO that contains methods for writing and reading Tasks
+ * class TaskIO that contains methods for writing and reading Tasks.
  *
  * @author MishchenkoAnton
- *
  * @version MavenAndLog4j
  */
 
 public class TaskIO {
     final static Logger logger = Logger.getLogger(TaskIO.class);
     private static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+
     private static void write(TaskList tasks, OutputStream out) throws IOException {
         DataOutputStream output = new DataOutputStream(out);
         try {
@@ -75,7 +74,7 @@ public class TaskIO {
                     Task task = null;
                     task = new Task(title, start, end, interval);
                     task.setActive(active);
-                    if(task != null) {
+                    if (task != null) {
                         tasks.add(task);
                     }
                 } else {
@@ -83,7 +82,7 @@ public class TaskIO {
                     Task task = null;
                     task = new Task(title, time);
                     task.setActive(active);
-                    if(task != null) {
+                    if (task != null) {
                         tasks.add(task);
                     }
                 }
@@ -102,12 +101,13 @@ public class TaskIO {
     }
 
     /**
-     * for binary writing from TaskList to file
+     * for binary writing from TaskList to file.
+     *
      * @param tasks TaskList to write from
-     * @param file to write to
+     * @param file  to write to
      * @throws IOException
      */
-    public static void writeBinary(TaskList tasks, File file) throws IOException{
+    public static void writeBinary(TaskList tasks, File file) throws IOException {
         try {
             write(tasks, new FileOutputStream(file.getPath()));
         } catch (FileNotFoundException e) {
@@ -117,12 +117,13 @@ public class TaskIO {
     }
 
     /**
-     * for binary reading from file to TaskList
+     * for binary reading from file to TaskList.
+     *
      * @param tasks TaskList to read to
-     * @param file to read from
+     * @param file  to read from
      * @throws IOException
      */
-    public static void readBinary(TaskList tasks, File file) throws IOException{
+    public static void readBinary(TaskList tasks, File file) throws IOException {
         try {
             read(tasks, new FileInputStream(file.getPath()));
         } catch (FileNotFoundException e) {
@@ -131,12 +132,12 @@ public class TaskIO {
         }
     }
 
-    private static void write(TaskList tasks, Writer out) throws IOException{
+    private static void write(TaskList tasks, Writer out) throws IOException {
         BufferedWriter output = new BufferedWriter(out);
         String taskStr = "";
         int size = tasks.size();
         try {
-            for (Task task: tasks) {
+            for (Task task : tasks) {
                 taskStr = "\"" + task.getTitle() + "\"";
                 if (task.isRepeated()) {
                     taskStr += " from [" + dateFormat.format(task.getStartTime()) + "] to [" +
@@ -169,7 +170,7 @@ public class TaskIO {
         }
     }
 
-    private static void read(TaskList tasks, Reader in) throws ParseException, IOException{
+    private static void read(TaskList tasks, Reader in) throws ParseException, IOException {
         BufferedReader input = new BufferedReader(in);
         String task;
         String title;
@@ -241,21 +242,21 @@ public class TaskIO {
                     Task taskToAdd = null;
                     taskToAdd = new Task(title, start, end, interval);
                     taskToAdd.setActive(active);
-                    if(taskToAdd != null) {
+                    if (taskToAdd != null) {
                         tasks.add(taskToAdd);
                     }
                 } else {
                     Task taskToAdd = null;
                     taskToAdd = new Task(title, time);
                     taskToAdd.setActive(active);
-                    if(taskToAdd != null) {
+                    if (taskToAdd != null) {
                         tasks.add(taskToAdd);
                     }
                 }
             }
         } catch (IOException e) {
-                e.printStackTrace();
-                logger.error(e);
+            e.printStackTrace();
+            logger.error(e);
         } finally {
             try {
                 input.close();
@@ -267,9 +268,10 @@ public class TaskIO {
     }
 
     /**
-     * for text writing from TaskList to file
+     * for text writing from TaskList to file.
+     *
      * @param tasks TaskList to write from
-     * @param file to write to
+     * @param file  to write to
      * @throws IOException
      */
     public static void writeText(TaskList tasks, File file) throws IOException {
@@ -282,9 +284,10 @@ public class TaskIO {
     }
 
     /**
-     * for text reading from file to TaskList
+     * for text reading from file to TaskList.
+     *
      * @param tasks TaskList to read to
-     * @param file to read from
+     * @param file  to read from
      * @throws IOException
      * @throws ParseException
      */
@@ -298,12 +301,13 @@ public class TaskIO {
     }
 
     /**
-     * for converting time from milliseconds to string
+     * for converting time from milliseconds to string.
+     *
      * @param time1 milliseconds to convert
      * @return converted string
      */
     public static String calculateTime(long time1) {
-        long time  = time1 / 1000;
+        long time = time1 / 1000;
         int days = (int) TimeUnit.SECONDS.toDays(time);
         long hours = TimeUnit.SECONDS.toHours(time) - TimeUnit.DAYS.toHours(days);
         long minutes = TimeUnit.SECONDS.toMinutes(time) - TimeUnit.DAYS.toMinutes(days) - TimeUnit.HOURS.toMinutes(hours);

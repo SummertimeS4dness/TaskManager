@@ -1,6 +1,5 @@
-package com.company.View.menu;
+package com.company.view.menu;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.EventListener;

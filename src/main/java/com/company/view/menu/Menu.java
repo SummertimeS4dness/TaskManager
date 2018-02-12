@@ -1,10 +1,9 @@
-package com.company.View.menu;
+package com.company.view.menu;
 
-import com.company.Controller.MainController;
-import com.company.Model.ArrayTaskList;
-import com.company.Model.Task;
-import com.company.Model.TaskIO;
-import com.company.View.javaConsole.JavaConsole;
+import com.company.controller.MainController;
+import com.company.model.ArrayTaskList;
+import com.company.model.TaskIO;
+import com.company.view.javaconsole.JavaConsole;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -16,8 +15,9 @@ import java.util.Scanner;
 import org.apache.log4j.Logger;
 
 /**
+ * A menu system for organizing code in the JavaConsole.
+ *
  * @author Mishchenko Anton
- * @brief A menu system for organizing code in the JavaConsole.
  * @history added method for removing menu item
  * added method for updating menu
  * added method for clearing menu
@@ -31,7 +31,8 @@ public class Menu {
     private int choosen;
 
     /**
-     * getter of choosen
+     * getter of choosen.
+     *
      * @return choosen
      */
     public int getChoosen() {
@@ -39,55 +40,58 @@ public class Menu {
     }
 
     /**
+     * Class Constructor.
+     *
      * @param c an instance of the JavaConsole UI
-     * @brief Class Constructor
      */
     public Menu(JavaConsole c) {
         console = c;
     }
 
     /**
+     * A menu item object.
+     *
      * @author David MacDermot
-     * @brief A menu item object.
      * @date 02-07-2012
      * @bug
      */
     private class MenuItem {
 
-        private MenuCallback _mc;
-        private String _text;
+        private MenuCallback mc;
+        private String text;
 
         /**
+         * Class Constructor.
+         *
          * @param text The text to display
          * @param mc   an MenuCallback object
-         * @brief Class Constructor
          */
         public MenuItem(String text, MenuCallback mc) {
-            _mc = mc;
-            _text = text;
+            mc = mc;
+            text = text;
         }
 
         /**
          * @return the MenuCallback object
          */
         public MenuCallback get_mc() {
-            return _mc;
+            return mc;
         }
 
         /**
          * @return the display text
          */
         public String get_text() {
-            return _text;
+            return text;
         }
 
         public void set_text(String text) {
-            _text = text;
+            text = text;
         }
 
     }
 
-    private ArrayList<MenuItem> Items =
+    private ArrayList<MenuItem> items =
             new ArrayList<MenuItem>();
 
     /**
@@ -96,44 +100,46 @@ public class Menu {
      * @return boolean true if successful.
      */
     public boolean add(String text, MenuCallback mc) {
-        return Items.add(new MenuItem(text, mc));
+        return items.add(new MenuItem(text, mc));
     }
 
     /**
-     * for removing MenuItem by index
-     * @param i
+     * for removing MenuItem by index.
+     *
+     * @param i index for removing
      */
     public void remove(int i) {
-        Items.remove(i);
+        items.remove(i);
     }
 
     /**
-     * for updating menu with ArrayTaskList
+     * for updating menu with ArrayTaskList.
+     *
      * @param arrayTaskList with tasks for updating
      */
     public void update(ArrayTaskList arrayTaskList) {
         for (int i = 0; i < arrayTaskList.size(); i++) {
-            Items.get(i).set_text(arrayTaskList.getTask(i).toString());
+            items.get(i).set_text(arrayTaskList.getTask(i).toString());
         }
     }
 
     /**
-     * for clearing menu
+     * for clearing menu.
      */
     public void clear() {
-        Items.clear();
+        items.clear();
     }
 
     /**
-     * @brief Display the list of menu item choices
+     * Display the list of menu item choices.
      */
     public void show() throws IOException, ParseException {
         choosen = 0;
         String a, b;
         Scanner in = new Scanner(System.in);
 
-        for (int i = 0; i < Items.size(); ++i) {
-            MenuItem mi = Items.get(i);
+        for (int i = 0; i < items.size(); ++i) {
+            MenuItem mi = items.get(i);
             System.out.printf(" [%d] %s \n", i + 1, mi.get_text());
         }
 
@@ -161,12 +167,12 @@ public class Menu {
 
         console.clear();
 
-        if (choosen > Items.size() || choosen < 1) {
+        if (choosen > items.size() || choosen < 1) {
             System.out.println("Invalid option.\nPress enter to continue...");
             in.nextLine();
             in.nextLine();
         } else {
-            MenuItem mi = Items.get(choosen - 1);
+            MenuItem mi = items.get(choosen - 1);
             MenuCallback mc = mi.get_mc();
             mc.Invoke();
         }

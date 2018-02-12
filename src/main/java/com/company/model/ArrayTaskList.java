@@ -1,13 +1,12 @@
-package com.company.Model;
+package com.company.model;
 
 import java.util.Arrays;
 import java.util.Iterator;
 
 /**
- * class ArrayTaskList that contains tasks
+ * class ArrayTaskList that contains tasks.
  *
  * @author MishchenkoAnton
- *
  * @version MavenAndLog4j
  */
 
@@ -15,11 +14,12 @@ public class ArrayTaskList extends TaskList implements Iterable<Task>, Cloneable
     private Task[] tasks = new Task[0];
 
     /**
-     * for adding task to list
+     * for adding task to list.
+     *
      * @param task to add
      * @throws NullPointerException
      */
-    public void add(Task task)throws NullPointerException {
+    public void add(Task task) throws NullPointerException {
         if (task == null) {
             throw new NullPointerException("Task to add is null");
         }
@@ -28,7 +28,8 @@ public class ArrayTaskList extends TaskList implements Iterable<Task>, Cloneable
     }
 
     /**
-     * for getting number of tasks
+     * for getting number of tasks.
+     *
      * @return number of tasks
      */
     public int size() {
@@ -36,7 +37,8 @@ public class ArrayTaskList extends TaskList implements Iterable<Task>, Cloneable
     }
 
     /**
-     * for removing task
+     * for removing task.
+     *
      * @param task to remove
      * @return true if remove is successful, false - if there is no such task in list
      * @throws NullPointerException
@@ -51,7 +53,7 @@ public class ArrayTaskList extends TaskList implements Iterable<Task>, Cloneable
                 return true;
             }
         }
-        
+
         return false;
     }
 
@@ -63,7 +65,8 @@ public class ArrayTaskList extends TaskList implements Iterable<Task>, Cloneable
     }
 
     /**
-     * for getting task by index
+     * for getting task by index.
+     *
      * @param index of task
      * @return task with needed index
      * @throws IndexOutOfBoundsException
@@ -79,7 +82,8 @@ public class ArrayTaskList extends TaskList implements Iterable<Task>, Cloneable
     }
 
     /**
-     * for comparing ArrayTaskLists
+     * for comparing ArrayTaskLists.
+     *
      * @param o object to compare with
      * @return true if this ArrayTaskList and o are equal, false - if unequal
      */
@@ -98,7 +102,8 @@ public class ArrayTaskList extends TaskList implements Iterable<Task>, Cloneable
     }
 
     /**
-     * for getting hashcode of ArrayTaskList
+     * for getting hashcode of ArrayTaskList.
+     *
      * @return hashCode of this ArrayTaskList
      */
     @Override
@@ -107,7 +112,8 @@ public class ArrayTaskList extends TaskList implements Iterable<Task>, Cloneable
     }
 
     /**
-     * for describing ArrayTaskList in String
+     * for describing ArrayTaskList in String.
+     *
      * @return String that describes ArrayTaskList
      */
     @Override
@@ -116,14 +122,15 @@ public class ArrayTaskList extends TaskList implements Iterable<Task>, Cloneable
     }
 
     /**
-     * for cloning ArrayTaskList
+     * for cloning ArrayTaskList.
+     *
      * @return cloned ArrayTaskList
      */
     public ArrayTaskList clone() {
         ArrayTaskList result = null;
         try {
-            result = (ArrayTaskList)super.clone();
-        }  catch(CloneNotSupportedException e) {
+            result = (ArrayTaskList) super.clone();
+        } catch (CloneNotSupportedException e) {
             e.printStackTrace();
         }
 
@@ -131,7 +138,8 @@ public class ArrayTaskList extends TaskList implements Iterable<Task>, Cloneable
     }
 
     /**
-     * for getting ArrayTaskListIterator
+     * for getting ArrayTaskListIterator.
+     *
      * @return ArrayTaskListIterator
      */
     @Override

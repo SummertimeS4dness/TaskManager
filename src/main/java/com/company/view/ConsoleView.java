@@ -1,8 +1,7 @@
-package com.company.View;
+package com.company.view;
 
-import com.company.Controller.MainController;
-import com.company.View.javaConsole.JavaConsole;
-import com.company.View.menu.Menu;
+import com.company.view.javaconsole.JavaConsole;
+import com.company.view.menu.Menu;
 
 /**
  * Console view of task manager

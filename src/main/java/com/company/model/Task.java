@@ -1,12 +1,11 @@
-package com.company.Model;
+package com.company.model;
 
 import java.util.Date;
 
 /**
- * class that describes task - main element of TaskManager
+ * class that describes task - main element of TaskManager.
  *
  * @author MishchenkoAnton
- *
  * @version MavenAndLog4j
  */
 public class Task implements Cloneable {
@@ -21,7 +20,8 @@ public class Task implements Cloneable {
     private Task next;
 
     /**
-     * constructor for creating task from another task
+     * constructor for creating task from another task.
+     *
      * @param data task from which you want to create the new one
      */
     public Task(Task data) {
@@ -39,11 +39,12 @@ public class Task implements Cloneable {
     }
 
     /**
-     * constructor of non-repeated tasks
+     * constructor of non-repeated tasks.
+     *
      * @param title of task
-     * @param time of task
+     * @param time  of task
      */
-    public Task(String title, Date time){
+    public Task(String title, Date time) {
         this.title = title;
         this.time = new Date(time.getTime());
         this.repeated = false;
@@ -54,10 +55,11 @@ public class Task implements Cloneable {
     }
 
     /**
-     * constructor of repeated tasks
-     * @param title of task
-     * @param start of task
-     * @param end of task
+     * constructor of repeated tasks.
+     *
+     * @param title    of task
+     * @param start    of task
+     * @param end      of task
      * @param interval of task
      */
     public Task(String title, Date start, Date end, long interval) {
@@ -70,7 +72,8 @@ public class Task implements Cloneable {
     }
 
     /**
-     * getter for next task from current
+     * getter for next task from current.
+     *
      * @return next task from current
      */
     public Task getNext() {
@@ -78,7 +81,8 @@ public class Task implements Cloneable {
     }
 
     /**
-     * setter for next task from current
+     * setter for next task from current.
+     *
      * @param next task to set as next
      * @throws NullPointerException
      */
@@ -90,7 +94,8 @@ public class Task implements Cloneable {
     }
 
     /**
-     * setter for start time of repeated task
+     * setter for start time of repeated task.
+     *
      * @param start time
      */
     public void setStart(Date start) {
@@ -98,7 +103,8 @@ public class Task implements Cloneable {
     }
 
     /**
-     * setter for end time of repeated task
+     * setter for end time of repeated task.
+     *
      * @param end time
      */
     public void setEnd(Date end) {
@@ -106,7 +112,8 @@ public class Task implements Cloneable {
     }
 
     /**
-     * setter for interval time of repeated task
+     * setter for interval time of repeated task.
+     *
      * @param interval time
      */
     public void setInterval(long interval) {
@@ -114,7 +121,8 @@ public class Task implements Cloneable {
     }
 
     /**
-     * getter for title of task
+     * getter for title of task.
+     *
      * @return title of task
      */
     public String getTitle() {
@@ -122,7 +130,8 @@ public class Task implements Cloneable {
     }
 
     /**
-     * getter for active of task
+     * getter for active of task.
+     *
      * @return true if task is active, false if inactive
      */
     public boolean isActive() {
@@ -130,7 +139,8 @@ public class Task implements Cloneable {
     }
 
     /**
-     * setter for title of task
+     * setter for title of task.
+     *
      * @param title to set
      */
     public void setTitle(String title) {
@@ -138,7 +148,8 @@ public class Task implements Cloneable {
     }
 
     /**
-     * setter for active of task
+     * setter for active of task.
+     *
      * @param active to set
      */
     public void setActive(boolean active) {
@@ -146,7 +157,8 @@ public class Task implements Cloneable {
     }
 
     /**
-     * getter for start time of repeated task
+     * getter for start time of repeated task.
+     *
      * @return start time of repeated task
      */
     public Date getStartTime() {
@@ -154,7 +166,8 @@ public class Task implements Cloneable {
     }
 
     /**
-     * getter for end time of repeated task
+     * getter for end time of repeated task.
+     *
      * @return end time of repeated task
      */
     public Date getEndTime() {
@@ -162,7 +175,8 @@ public class Task implements Cloneable {
     }
 
     /**
-     * getter for start time of task
+     * getter for start time of task.
+     *
      * @return start time of repeated task or time of non-repeated task
      */
     public Date getTime() {
@@ -173,7 +187,8 @@ public class Task implements Cloneable {
     }
 
     /**
-     * setter of time of non-repeated task
+     * setter of time of non-repeated task.
+     *
      * @param time to set
      */
     public void setTime(Date time) {
@@ -185,7 +200,8 @@ public class Task implements Cloneable {
     }
 
     /**
-     * getter of interval of task
+     * getter of interval of task.
+     *
      * @return 0 if task if non-repeated or interval of repeated task
      */
     public long getRepeatInterval() {
@@ -197,9 +213,10 @@ public class Task implements Cloneable {
     }
 
     /**
-     * setter of time of repeated task
-     * @param start time to set
-     * @param end time to set
+     * setter of time of repeated task.
+     *
+     * @param start    time to set
+     * @param end      time to set
      * @param interval time to set
      */
     public void setTime(Date start, Date end, long interval) {
@@ -210,7 +227,8 @@ public class Task implements Cloneable {
     }
 
     /**
-     * getter for repeated of task
+     * getter for repeated of task.
+     *
      * @return true if task is repeated, false if non-repeated
      */
     public boolean isRepeated() {
@@ -218,22 +236,23 @@ public class Task implements Cloneable {
     }
 
     /**
-     * for getting time of next time of task after some time
+     * for getting time of next time of task after some time.
+     *
      * @param current time to calculate next time after it
      * @return next time after current
      */
     public Date nextTimeAfter(Date current) {
         if (!isActive()) {
             return null;
-        } else if(!isRepeated()) {
+        } else if (!isRepeated()) {
             if (current.getTime() < time.getTime()) {
                 return time;
             } else {
                 return null;
             }
-        } else if(isRepeated()) {
+        } else if (isRepeated()) {
             Date res = null;
-            for (Date i = new Date(start.getTime()); i.compareTo(end) <= 0; i.setTime(i.getTime()+ interval * 1000)) {
+            for (Date i = new Date(start.getTime()); i.compareTo(end) <= 0; i.setTime(i.getTime() + interval * 1000)) {
                 if (i.compareTo(current) > 0) {
                     res = new Date(i.getTime());
                     break;
@@ -246,7 +265,8 @@ public class Task implements Cloneable {
     }
 
     /**
-     * for cloning Task
+     * for cloning Task.
+     *
      * @return cloned Task
      */
     public Task clone() {
@@ -257,13 +277,14 @@ public class Task implements Cloneable {
             e.printStackTrace();
         }
         if (this.next != null) {
-            ((Task)result).next = this.next.clone();
+            ((Task) result).next = this.next.clone();
         }
-        return (Task)result;
+        return (Task) result;
     }
 
     /**
-     * for comparing Tasks
+     * for comparing Tasks.
+     *
      * @param o object to compare with
      * @return true if this Task and o are equal, false - if unequal
      */
@@ -300,7 +321,8 @@ public class Task implements Cloneable {
     }
 
     /**
-     * for getting hashcode of Task
+     * for getting hashcode of Task.
+     *
      * @return hashCode of this Task
      */
     @Override
@@ -309,7 +331,7 @@ public class Task implements Cloneable {
         result = 31 * result + (time != null ? time.hashCode() : 0);
         result = 31 * result + (start != null ? start.hashCode() : 0);
         result = 31 * result + (end != null ? end.hashCode() : 0);
-        result = 31 * result + (int)interval;
+        result = 31 * result + (int) interval;
         result = 31 * result + (active ? 1 : 0);
         result = 31 * result + (repeated ? 1 : 0);
         result = 31 * result + (next != null ? next.hashCode() : 0);
@@ -317,16 +339,16 @@ public class Task implements Cloneable {
     }
 
     /**
-     * for describing Task in String
+     * for describing Task in String.
+     *
      * @return String that describes Task
      */
     @Override
     public String toString() {
-        if(repeated) {
+        if (repeated) {
             return title + ", start: " + start + ", end: " + end + ", interval: " + TaskIO.calculateTime(interval)
                     + ", active: " + active + ", repeated: " + repeated;
-        }
-        else {
+        } else {
             return title + ", time: " + start + ", active: " + active + ", repeated: " + repeated;
         }
     }

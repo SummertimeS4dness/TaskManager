@@ -1,28 +1,26 @@
-package com.company.Controller;
+package com.company.controller;
 
-import com.company.Model.*;
-import com.company.View.ConsoleView;
-import com.company.View.menu.Menu;
-import com.company.View.menu.MenuCallback;
+import com.company.model.*;
+import com.company.view.ConsoleView;
+import com.company.view.menu.Menu;
+import com.company.view.menu.MenuCallback;
 
-import javax.swing.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.nio.file.Path;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.Timer;
+import javax.swing.*;
+
 import org.apache.log4j.Logger;
 
 /**
- * Main controller of TaskManager
- *
+ * Main controller of TaskManager.
+ *.\
  * @author MishchenkoAnton
- *
  * @version MavenAndLog4j
  */
 
@@ -41,7 +39,8 @@ public class MainController {
     private static String fileName = "";
 
     /**
-     * getter for current file with task list
+     * getter for current file with task list.
+     *
      * @return current file with task list
      */
     public static File getFile() {
@@ -49,7 +48,8 @@ public class MainController {
     }
 
     /**
-     * getter for ArrayTaskList with current tasks
+     * getter for ArrayTaskList with current tasks.
+     *
      * @return ArrayTaskList with current tasks
      */
     public static ArrayTaskList getArrayTaskList() {
@@ -61,7 +61,7 @@ public class MainController {
     }
 
     private static boolean dateValidator(String dateToValidate) throws ParseException {
-        if(dateToValidate == null){
+        if (dateToValidate == null) {
             return false;
         }
         dateFormat.setLenient(false);
@@ -78,23 +78,35 @@ public class MainController {
         exit = false;
     }
 
-    private static void backHandler(){
+    private static void backHandler() {
         back = false;
     }
 
-    private static void backHandler1(){
+    private static void backHandler1() {
         back1 = false;
     }
 
     private static void addTaskHandler() throws IOException, ParseException {
         Menu menu = new Menu(ConsoleView.getConsole());
 
-        menu.add("Repeated", new MenuCallback() { public void Invoke() throws ParseException { repeatedTaskHandler(); } });
-        menu.add("Non-repeated", new MenuCallback() { public void Invoke() throws ParseException { nonRepeatedTaskHandler(); } });
-        menu.add("Back", new MenuCallback() { public void Invoke() { backHandler(); } });
+        menu.add("Repeated", new MenuCallback() {
+            public void Invoke() throws ParseException {
+                repeatedTaskHandler();
+            }
+        });
+        menu.add("Non-repeated", new MenuCallback() {
+            public void Invoke() throws ParseException {
+                nonRepeatedTaskHandler();
+            }
+        });
+        menu.add("Back", new MenuCallback() {
+            public void Invoke() {
+                backHandler();
+            }
+        });
         back = true;
 
-        while(back) {
+        while (back) {
             consoleView.getConsole().setCountTo0();
             ConsoleView.getConsole().clear();
             System.out.println("Choose type of task:");
@@ -166,7 +178,7 @@ public class MainController {
         back = false;
     }
 
-    private static void nonRepeatedTaskHandler() throws ParseException{
+    private static void nonRepeatedTaskHandler() throws ParseException {
         Task task = null;
         task = new Task("1", new Date(), new Date(), 0);
         String res;
@@ -202,13 +214,21 @@ public class MainController {
 
     private static void editTaskHandler() throws IOException, ParseException {
         Menu menu = new Menu(ConsoleView.getConsole());
-        for(Task task: arrayTaskList) {
-            menu.add(task.toString(), new MenuCallback() { public void Invoke() throws IOException, ParseException { selectionOfCharacteristicHandler(menu); } });
+        for (Task task : arrayTaskList) {
+            menu.add(task.toString(), new MenuCallback() {
+                public void Invoke() throws IOException, ParseException {
+                    selectionOfCharacteristicHandler(menu);
+                }
+            });
         }
-        menu.add("Back", new MenuCallback() { public void Invoke() { backHandler(); } });
+        menu.add("Back", new MenuCallback() {
+            public void Invoke() {
+                backHandler();
+            }
+        });
         back = true;
 
-        while(back) {
+        while (back) {
             consoleView.getConsole().setCountTo0();
             ConsoleView.getConsole().clear();
             System.out.println("Choose task to edit:");
@@ -220,23 +240,67 @@ public class MainController {
         taskNumber = menu.getChoosen();
         Menu menu1 = new Menu(ConsoleView.getConsole());
         consoleView.getConsole().setCountTo0();
-        if(arrayTaskList.getTask(taskNumber - 1).isRepeated()) {
-            menu1.add("Title", new MenuCallback() { public void Invoke() throws ParseException { editingOfCharacteristicHandler(1, menu); } });
-            menu1.add("Start", new MenuCallback() { public void Invoke() throws ParseException { editingOfCharacteristicHandler(2, menu); } });
-            menu1.add("End", new MenuCallback() { public void Invoke() throws ParseException { editingOfCharacteristicHandler(3, menu); } });
-            menu1.add("Interval", new MenuCallback() { public void Invoke() throws ParseException { editingOfCharacteristicHandler(4, menu); } });
-            menu1.add("Active", new MenuCallback() { public void Invoke() throws ParseException { editingOfCharacteristicHandler(5, menu); } });
-            menu1.add("Type", new MenuCallback() { public void Invoke() throws ParseException { editingOfCharacteristicHandler(7, menu); } });
+        if (arrayTaskList.getTask(taskNumber - 1).isRepeated()) {
+            menu1.add("Title", new MenuCallback() {
+                public void Invoke() throws ParseException {
+                    editingOfCharacteristicHandler(1, menu);
+                }
+            });
+            menu1.add("Start", new MenuCallback() {
+                public void Invoke() throws ParseException {
+                    editingOfCharacteristicHandler(2, menu);
+                }
+            });
+            menu1.add("End", new MenuCallback() {
+                public void Invoke() throws ParseException {
+                    editingOfCharacteristicHandler(3, menu);
+                }
+            });
+            menu1.add("Interval", new MenuCallback() {
+                public void Invoke() throws ParseException {
+                    editingOfCharacteristicHandler(4, menu);
+                }
+            });
+            menu1.add("Active", new MenuCallback() {
+                public void Invoke() throws ParseException {
+                    editingOfCharacteristicHandler(5, menu);
+                }
+            });
+            menu1.add("Type", new MenuCallback() {
+                public void Invoke() throws ParseException {
+                    editingOfCharacteristicHandler(7, menu);
+                }
+            });
         } else {
-            menu1.add("Title", new MenuCallback() { public void Invoke() throws ParseException { editingOfCharacteristicHandler(1, menu); } });
-            menu1.add("Time", new MenuCallback() { public void Invoke() throws ParseException { editingOfCharacteristicHandler(6, menu); } });
-            menu1.add("Active", new MenuCallback() { public void Invoke() throws ParseException { editingOfCharacteristicHandler(5, menu); } });
-            menu1.add("Type", new MenuCallback() { public void Invoke() throws ParseException { editingOfCharacteristicHandler(7, menu); } });
+            menu1.add("Title", new MenuCallback() {
+                public void Invoke() throws ParseException {
+                    editingOfCharacteristicHandler(1, menu);
+                }
+            });
+            menu1.add("Time", new MenuCallback() {
+                public void Invoke() throws ParseException {
+                    editingOfCharacteristicHandler(6, menu);
+                }
+            });
+            menu1.add("Active", new MenuCallback() {
+                public void Invoke() throws ParseException {
+                    editingOfCharacteristicHandler(5, menu);
+                }
+            });
+            menu1.add("Type", new MenuCallback() {
+                public void Invoke() throws ParseException {
+                    editingOfCharacteristicHandler(7, menu);
+                }
+            });
         }
-        menu1.add("Back", new MenuCallback() { public void Invoke() { backHandler(); } });
+        menu1.add("Back", new MenuCallback() {
+            public void Invoke() {
+                backHandler();
+            }
+        });
         back = true;
 
-        while(back) {
+        while (back) {
             ConsoleView.getConsole().clear();
             System.out.println("Choose characteristic to edit:");
             menu1.show();
@@ -252,10 +316,10 @@ public class MainController {
         Date date = new Date();
         Date start = new Date();
         Date end = new Date();
-        Task task =  arrayTaskList.getTask(taskNumber - 1);
+        Task task = arrayTaskList.getTask(taskNumber - 1);
         boolean active = true;
         consoleView.getConsole().setCountTo0();
-        switch (i){
+        switch (i) {
             case 1:
                 System.out.println("Enter new title:");
                 res = scanner.nextLine();
@@ -314,15 +378,14 @@ public class MainController {
                 break;
             case 5:
                 System.out.println("Enter new active:");
-                while(true) {
+                while (true) {
                     res = scanner.nextLine();
                     res1 = processBackspace(res);
                     consoleView.getConsole().setCountTo0();
-                    if(res1.equals("true")){
+                    if (res1.equals("true")) {
                         active = true;
                         break;
-                    }
-                    else if(res1.equals("false")){
+                    } else if (res1.equals("false")) {
                         active = false;
                         break;
                     }
@@ -347,7 +410,7 @@ public class MainController {
                 task.setTime(date);
                 break;
             case 7:
-                if(task.isRepeated()){
+                if (task.isRepeated()) {
                     System.out.println("New type: non-repeated.");
                     consoleView.getConsole().setCountTo0();
                     warning = "Enter time in format \"yyyy-MM-dd HH:mm\":";
@@ -366,8 +429,7 @@ public class MainController {
                     }
                     task.setTime(date);
                     back = false;
-                }
-                else {
+                } else {
                     System.out.println("New type: repeated.");
                     consoleView.getConsole().setCountTo0();
                     warning = "Enter start time in format \"yyyy-MM-dd HH:mm\":";
@@ -428,13 +490,21 @@ public class MainController {
 
     private static void deleteTaskHandler() throws IOException, ParseException {
         Menu menu = new Menu(ConsoleView.getConsole());
-        for(Task task: arrayTaskList) {
-            menu.add(task.toString(), new MenuCallback() { public void Invoke() { deleteTaskHandler(menu); } });
+        for (Task task : arrayTaskList) {
+            menu.add(task.toString(), new MenuCallback() {
+                public void Invoke() {
+                    deleteTaskHandler(menu);
+                }
+            });
         }
-        menu.add("Back", new MenuCallback() { public void Invoke() { backHandler(); } });
+        menu.add("Back", new MenuCallback() {
+            public void Invoke() {
+                backHandler();
+            }
+        });
         back = true;
 
-        while(back) {
+        while (back) {
             consoleView.getConsole().setCountTo0();
             ConsoleView.getConsole().clear();
             System.out.println("Choose task to delete:");
@@ -453,19 +523,22 @@ public class MainController {
 
     private static void listTaskHandler() throws IOException, ParseException {
         Menu menu = new Menu(ConsoleView.getConsole());
-        menu.add("Back", new MenuCallback() { public void Invoke() { backHandler(); } });
+        menu.add("Back", new MenuCallback() {
+            public void Invoke() {
+                backHandler();
+            }
+        });
         back = true;
 
-        while(back) {
+        while (back) {
             ConsoleView.getConsole().clear();
-            if (arrayTaskList.size() != 0){
+            if (arrayTaskList.size() != 0) {
                 System.out.println("Your tasks:");
                 for (Task task : arrayTaskList) {
                     System.out.println(task.toString());
                     System.out.println();
                 }
-            }
-            else {
+            } else {
                 System.out.println("No tasks in your list yet");
             }
             consoleView.getConsole().setCountTo0();
@@ -509,19 +582,26 @@ public class MainController {
             e.printStackTrace();
         }
         Map<Date, Set<Task>> calendar = Tasks.calendar(arrayTaskList, start, end);
-        for(Map.Entry<Date, Set<Task>> entry: calendar.entrySet()) {
+        for (Map.Entry<Date, Set<Task>> entry : calendar.entrySet()) {
             Set<Task> set = entry.getValue();
-            menu.add(entry.getKey().toString(), new MenuCallback() { public void Invoke() throws IOException, ParseException { dates(set); } });
+            menu.add(entry.getKey().toString(), new MenuCallback() {
+                public void Invoke() throws IOException, ParseException {
+                    dates(set);
+                }
+            });
         }
-        menu.add("Back", new MenuCallback() { public void Invoke() { backHandler(); } });
+        menu.add("Back", new MenuCallback() {
+            public void Invoke() {
+                backHandler();
+            }
+        });
         back = true;
 
-        while(back) {
+        while (back) {
             ConsoleView.getConsole().clear();
-            if(calendar.size() != 0) {
+            if (calendar.size() != 0) {
                 System.out.println("Your tasks for: " + start.toString() + " - " + end.toString());
-            }
-            else {
+            } else {
                 System.out.println("No tasks for: " + start.toString() + " - " + end.toString());
             }
             consoleView.getConsole().setCountTo0();
@@ -532,11 +612,15 @@ public class MainController {
     private static void dates(Set<Task> set) throws IOException, ParseException {
         back1 = true;
         Menu menu = new Menu(ConsoleView.getConsole());
-        menu.add("Back", new MenuCallback() { public void Invoke() { backHandler1(); } });
-        while(back1) {
+        menu.add("Back", new MenuCallback() {
+            public void Invoke() {
+                backHandler1();
+            }
+        });
+        while (back1) {
             consoleView.getConsole().setCountTo0();
             ConsoleView.getConsole().clear();
-            for(Task task: set){
+            for (Task task : set) {
                 System.out.println(task.toString());
             }
             consoleView.getConsole().setCountTo0();
@@ -544,20 +628,48 @@ public class MainController {
         }
     }
 
-    private static void newFileTaskHandler(Menu menu){
+    private static void newFileTaskHandler(Menu menu) {
         System.out.println("Enter name of new file:");
         consoleView.getConsole().setCountTo0();
         String res = scanner.nextLine();
         String name = processBackspace(res);
         file = new File("TaskLists\\" + name + ".txt");
         menu.clear();
-        menu.add("Add new task", new MenuCallback() { public void Invoke() throws IOException, ParseException { addTaskHandler(); } });
-        menu.add("Edit task", new MenuCallback() { public void Invoke() throws IOException, ParseException { editTaskHandler(); } });
-        menu.add("Delete task", new MenuCallback() { public void Invoke() throws IOException, ParseException { deleteTaskHandler(); } });
-        menu.add("Task list", new MenuCallback() { public void Invoke() throws IOException, ParseException { listTaskHandler(); } });
-        menu.add("Calendar", new MenuCallback() { public void Invoke() throws ParseException, IOException { calendarTaskHandler(); } });
-        menu.add("Save list to file", new MenuCallback() { public void Invoke() throws IOException { saveToFileHandler(); } });
-        menu.add("Exit", new MenuCallback() { public void Invoke() { exitHandler(); } });
+        menu.add("Add new task", new MenuCallback() {
+            public void Invoke() throws IOException, ParseException {
+                addTaskHandler();
+            }
+        });
+        menu.add("Edit task", new MenuCallback() {
+            public void Invoke() throws IOException, ParseException {
+                editTaskHandler();
+            }
+        });
+        menu.add("Delete task", new MenuCallback() {
+            public void Invoke() throws IOException, ParseException {
+                deleteTaskHandler();
+            }
+        });
+        menu.add("Task list", new MenuCallback() {
+            public void Invoke() throws IOException, ParseException {
+                listTaskHandler();
+            }
+        });
+        menu.add("Calendar", new MenuCallback() {
+            public void Invoke() throws ParseException, IOException {
+                calendarTaskHandler();
+            }
+        });
+        menu.add("Save list to file", new MenuCallback() {
+            public void Invoke() throws IOException {
+                saveToFileHandler();
+            }
+        });
+        menu.add("Exit", new MenuCallback() {
+            public void Invoke() {
+                exitHandler();
+            }
+        });
     }
 
     private static void existingFileTaskHandler(Menu menu) throws IOException, ParseException {
@@ -568,41 +680,96 @@ public class MainController {
             file = fileopen.getSelectedFile();
 
         }
-        if(file != null) {
+        if (file != null) {
             TaskIO.readText(arrayTaskList, file);
             menu.clear();
-            menu.add("Add new task", new MenuCallback() { public void Invoke() throws IOException, ParseException { addTaskHandler(); } });
-            menu.add("Edit task", new MenuCallback() { public void Invoke() throws IOException, ParseException { editTaskHandler(); } });
-            menu.add("Delete task", new MenuCallback() { public void Invoke() throws IOException, ParseException { deleteTaskHandler(); } });
-            menu.add("Task list", new MenuCallback() { public void Invoke() throws IOException, ParseException { listTaskHandler(); } });
-            menu.add("Calendar", new MenuCallback() { public void Invoke() throws ParseException, IOException { calendarTaskHandler(); } });
-            menu.add("Save list to file", new MenuCallback() { public void Invoke() throws IOException { saveToFileHandler(); } });
-            menu.add("Exit", new MenuCallback() { public void Invoke() { exitHandler(); } });
+            menu.add("Add new task", new MenuCallback() {
+                public void Invoke() throws IOException, ParseException {
+                    addTaskHandler();
+                }
+            });
+            menu.add("Edit task", new MenuCallback() {
+                public void Invoke() throws IOException, ParseException {
+                    editTaskHandler();
+                }
+            });
+            menu.add("Delete task", new MenuCallback() {
+                public void Invoke() throws IOException, ParseException {
+                    deleteTaskHandler();
+                }
+            });
+            menu.add("Task list", new MenuCallback() {
+                public void Invoke() throws IOException, ParseException {
+                    listTaskHandler();
+                }
+            });
+            menu.add("Calendar", new MenuCallback() {
+                public void Invoke() throws ParseException, IOException {
+                    calendarTaskHandler();
+                }
+            });
+            menu.add("Save list to file", new MenuCallback() {
+                public void Invoke() throws IOException {
+                    saveToFileHandler();
+                }
+            });
+            menu.add("Exit", new MenuCallback() {
+                public void Invoke() {
+                    exitHandler();
+                }
+            });
         }
     }
 
     private static void continueFileTaskHandler(Menu menu) throws IOException, ParseException {
         File f = new File("TaskLists\\lastFile.txt");
-        if(f.exists() && !f.isDirectory()) {
+        if (f.exists() && !f.isDirectory()) {
             try {
                 fileName = new Scanner(f).useDelimiter("\\Z").next();
             } catch (FileNotFoundException e) {
                 logger.error("No such file " + f.getName(), e);
             }
             file = new File(fileName);
-            if(file != null) {
+            if (file != null) {
                 TaskIO.readText(arrayTaskList, file);
                 menu.clear();
-                menu.add("Add new task", new MenuCallback() { public void Invoke() throws IOException, ParseException { addTaskHandler(); } });
-                menu.add("Edit task", new MenuCallback() { public void Invoke() throws IOException, ParseException { editTaskHandler(); } });
-                menu.add("Delete task", new MenuCallback() { public void Invoke() throws IOException, ParseException { deleteTaskHandler(); } });
-                menu.add("Task list", new MenuCallback() { public void Invoke() throws IOException, ParseException { listTaskHandler(); } });
-                menu.add("Calendar", new MenuCallback() { public void Invoke() throws ParseException, IOException { calendarTaskHandler(); } });
-                menu.add("Save list to file", new MenuCallback() { public void Invoke() throws IOException { saveToFileHandler(); } });
-                menu.add("Exit", new MenuCallback() { public void Invoke() { exitHandler(); } });
+                menu.add("Add new task", new MenuCallback() {
+                    public void Invoke() throws IOException, ParseException {
+                        addTaskHandler();
+                    }
+                });
+                menu.add("Edit task", new MenuCallback() {
+                    public void Invoke() throws IOException, ParseException {
+                        editTaskHandler();
+                    }
+                });
+                menu.add("Delete task", new MenuCallback() {
+                    public void Invoke() throws IOException, ParseException {
+                        deleteTaskHandler();
+                    }
+                });
+                menu.add("Task list", new MenuCallback() {
+                    public void Invoke() throws IOException, ParseException {
+                        listTaskHandler();
+                    }
+                });
+                menu.add("Calendar", new MenuCallback() {
+                    public void Invoke() throws ParseException, IOException {
+                        calendarTaskHandler();
+                    }
+                });
+                menu.add("Save list to file", new MenuCallback() {
+                    public void Invoke() throws IOException {
+                        saveToFileHandler();
+                    }
+                });
+                menu.add("Exit", new MenuCallback() {
+                    public void Invoke() {
+                        exitHandler();
+                    }
+                });
             }
-        }
-        else {
+        } else {
             menu.remove(2);
             System.out.println("There is no last file to work");
         }
@@ -620,7 +787,7 @@ public class MainController {
         logger.debug("Session ended");
     }
 
-    private static void saveToFileHandler() throws IOException{
+    private static void saveToFileHandler() throws IOException {
         if (arrayTaskList != null && file != null) {
             TaskIO.writeText(arrayTaskList, file);
             try (PrintWriter out = new PrintWriter("TaskLists\\lastFile.txt")) {
@@ -633,7 +800,8 @@ public class MainController {
     }
 
     /**
-     * for removing backspaces from string
+     * for removing backspaces from string.
+     *
      * @param input string from which you want to remove backspaces
      * @return input string without backspaces
      */
@@ -658,14 +826,30 @@ public class MainController {
         arrayTaskList = new ArrayTaskList();
         logger.debug("Session started");
         File dir = new File("TaskLists");
-        if(!dir.exists()){
+        if (!dir.exists()) {
             new File("TaskLists").mkdir();
         }
-        consoleView.getMenu().add("New file", new MenuCallback() { public void Invoke() { newFileTaskHandler(consoleView.getMenu()); } });
-        consoleView.getMenu().add("Existing file", new MenuCallback() { public void Invoke() throws IOException, ParseException { existingFileTaskHandler(consoleView.getMenu()); } });
-        consoleView.getMenu().add("Continue last file", new MenuCallback() { public void Invoke() throws IOException, ParseException { continueFileTaskHandler(consoleView.getMenu()); } });
-        consoleView.getMenu().add("Exit", new MenuCallback() { public void Invoke() { exitHandler(); } });
-        while(MainController.isExit()) {
+        consoleView.getMenu().add("New file", new MenuCallback() {
+            public void Invoke() {
+                newFileTaskHandler(consoleView.getMenu());
+            }
+        });
+        consoleView.getMenu().add("Existing file", new MenuCallback() {
+            public void Invoke() throws IOException, ParseException {
+                existingFileTaskHandler(consoleView.getMenu());
+            }
+        });
+        consoleView.getMenu().add("Continue last file", new MenuCallback() {
+            public void Invoke() throws IOException, ParseException {
+                continueFileTaskHandler(consoleView.getMenu());
+            }
+        });
+        consoleView.getMenu().add("Exit", new MenuCallback() {
+            public void Invoke() {
+                exitHandler();
+            }
+        });
+        while (MainController.isExit()) {
             consoleView.getConsole().clear();
             System.out.println("Please choose an option:");
             consoleView.getMenu().show();
