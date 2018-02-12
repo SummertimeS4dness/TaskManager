@@ -5,7 +5,6 @@ import com.company.Model.ArrayTaskList;
 import com.company.Model.Task;
 import com.company.Model.TaskIO;
 import com.company.View.javaConsole.JavaConsole;
-import org.apache.log4j.Logger;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -14,15 +13,16 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import org.apache.log4j.Logger;
+
 /**
  * @author Mishchenko Anton
  * @brief A menu system for organizing code in the JavaConsole.
- *
  * @history added method for removing menu item
- *          added method for updating menu
- *          added method for clearing menu
- *          fixed backspacing in choosing menu item
- *          added exit from the program by typing "exit"
+ * added method for updating menu
+ * added method for clearing menu
+ * fixed backspacing in choosing menu item
+ * added exit from the program by typing "exit"
  * @bug
  */
 public class Menu {
@@ -127,20 +127,22 @@ public class Menu {
         try {
             a = in.nextLine();
             b = MainController.processBackspace(a);
-            if(b.equals("exit")){
-                if(MainController.getArrayTaskList()!= null && MainController.getFile() != null) {
+            if (b.equals("exit")) {
+                if (MainController.getArrayTaskList() != null && MainController.getFile() != null) {
                     TaskIO.writeText(MainController.getArrayTaskList(), MainController.getFile());
                     try (PrintWriter out = new PrintWriter("TaskLists\\lastFile.txt")) {
                         out.println(MainController.getFile().getName());
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
+                        logger.error(e);
                     }
                 }
                 logger.debug("Session ended");
                 System.exit(0);
             }
             choosen = Integer.parseInt(b);
-        } catch (Exception e1) { /* Ignore non numeric and mixed */ }
+        } catch (Exception e1) {
+        }
 
         console.clear();
 

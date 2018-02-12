@@ -1,8 +1,12 @@
 package com.company.Model;
 
+import com.company.Controller.MainController;
+import org.apache.log4j.Logger;
+
 import java.util.*;
 
 public class Tasks {
+    final static Logger logger = Logger.getLogger(Tasks.class);
     public static Iterable<Task> incoming(Iterable<Task> tasks, Date start, Date end) {
         TaskList incomingTasks = new ArrayTaskList();
         for (Task task: tasks) {
@@ -42,7 +46,9 @@ public class Tasks {
                     }
                 }
             }
-        } catch (NullPointerException e) {}
+        } catch (NullPointerException e) {
+            logger.error(e);
+        }
 
         return sortedMap;
     }

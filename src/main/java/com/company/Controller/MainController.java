@@ -149,7 +149,7 @@ public class MainController {
                 interval = Long.parseLong(dateStr);
                 break;
             } catch (NumberFormatException nfe) {
-                System.out.print("Error in your input, interval in minutes again: ");
+                System.out.print("Error in your input, enter interval in minutes again: ");
             }
         }
         task = new Task(title, start, end, interval * 60000);
@@ -637,7 +637,7 @@ public class MainController {
             try {
                 fileName = new Scanner(f).useDelimiter("\\Z").next();
             } catch (FileNotFoundException e) {
-                e.printStackTrace();
+                logger.error("No such file " + f.getName(), e);
             }
             file = new File(fileName);
             if(file != null) {

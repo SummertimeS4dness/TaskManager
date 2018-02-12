@@ -1,6 +1,8 @@
 package com.company.Model;
 
+import com.company.Controller.MainController;
 import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
+import org.apache.log4j.Logger;
 
 import java.io.*;
 import java.text.DateFormat;
@@ -10,6 +12,7 @@ import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 public class TaskIO {
+    final static Logger logger = Logger.getLogger(TaskIO.class);
     private static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
     public static void write(TaskList tasks, OutputStream out) throws IOException {
         DataOutputStream output = new DataOutputStream(out);
@@ -34,11 +37,13 @@ public class TaskIO {
 
         } catch (IOException e) {
             e.printStackTrace();
+            logger.error(e);
         } finally {
             try {
                 output.close();
             } catch (IOException e) {
                 e.printStackTrace();
+                logger.error(e);
             }
         }
     }
@@ -79,11 +84,13 @@ public class TaskIO {
             }
         } catch (IOException e) {
             e.printStackTrace();
+            logger.error(e);
         } finally {
             try {
                 input.close();
             } catch (IOException e) {
                 e.printStackTrace();
+                logger.error(e);
             }
         }
     }
@@ -93,6 +100,7 @@ public class TaskIO {
             write(tasks, new FileOutputStream(file.getPath()));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+            logger.error("No such file " + file.getPath(), e);
         }
     }
 
@@ -101,6 +109,7 @@ public class TaskIO {
             read(tasks, new FileInputStream(file.getPath()));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+            logger.error("No such file " + file.getPath(), e);
         }
     }
 
@@ -131,11 +140,13 @@ public class TaskIO {
             }
         } catch (IOException e) {
             e.printStackTrace();
+            logger.error(e);
         } finally {
             try {
                 output.close();
             } catch (IOException e) {
                 e.printStackTrace();
+                logger.error(e);
             }
         }
     }
@@ -163,6 +174,7 @@ public class TaskIO {
                         time = dateFormat.parse(date);
                     } catch (ParseException e) {
                         e.printStackTrace();
+                        logger.error(date, e);
                     }
                 } else if (task.indexOf(" from ") != -1) {
                     repeated = true;
@@ -173,6 +185,7 @@ public class TaskIO {
                         start = dateFormat.parse(date);
                     } catch (ParseException e) {
                         e.printStackTrace();
+                        logger.error(date, e);
                     }
                     start1 = task.indexOf("[", task.indexOf(" to "));
                     end1 = task.indexOf("]", start1);
@@ -181,6 +194,7 @@ public class TaskIO {
                         end = dateFormat.parse(date);
                     } catch (ParseException e) {
                         e.printStackTrace();
+                        logger.error(date, e);
                     }
                     start1 = task.indexOf("[", task.indexOf(" every "));
                     end1 = task.indexOf("]", start1);
@@ -223,11 +237,13 @@ public class TaskIO {
             }
         } catch (IOException e) {
                 e.printStackTrace();
+                logger.error(e);
         } finally {
             try {
                 input.close();
             } catch (IOException e) {
                 e.printStackTrace();
+                logger.error(e);
             }
         }
     }
@@ -237,6 +253,7 @@ public class TaskIO {
             write(tasks, new FileWriter(file));
         } catch (IOException e) {
             e.printStackTrace();
+            logger.error("No such file " + file.getPath(), e);
         }
     }
     public static void readText(TaskList tasks, File file) throws ParseException, IOException {
@@ -244,6 +261,7 @@ public class TaskIO {
             read(tasks, new FileReader(file.getPath()));
         } catch (IOException e) {
             e.printStackTrace();
+            logger.error("No such file " + file.getPath(), e);
         }
     }
 

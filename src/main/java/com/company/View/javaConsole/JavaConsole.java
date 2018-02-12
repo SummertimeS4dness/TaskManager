@@ -11,10 +11,10 @@ import java.io.*;
 
 /**
  * @brief A simple Java Console for your application (Swing version).
- * 
+ *
  * @par Comments:
  * 		 Original located at http://www.comweb.nl/java/Console/Console.html
- * 
+ *
  * @author Mishchenko Anton
  *
  * @history added label for notifications
@@ -63,24 +63,26 @@ public class JavaConsole extends WindowAdapter implements WindowListener, Action
 		frame.getContentPane().setLayout(new BorderLayout());
 		frame.getContentPane().add(new JScrollPane(textArea),BorderLayout.CENTER);
 		frame.getContentPane().add(label,BorderLayout.SOUTH);
-		frame.setVisible(true);		
-		
+		frame.setVisible(true);
+
 		frame.addWindowListener(this);
-		
+
 		try
 		{
 			PipedOutputStream pout=new PipedOutputStream(this.pin);
-			System.setOut(new PrintStream(pout,true)); 
-		} 
+			System.setOut(new PrintStream(pout,true));
+		}
 		catch (IOException io)
 		{
 			textArea.append("Couldn't redirect STDOUT to this console\n"+io.getMessage());
 			textArea.setCaretPosition(textArea.getDocument().getLength()); //DWM 02-07-2012
+            logger.error("Couldn't redirect STDOUT to this console\n"+io.getMessage());
 		}
 		catch (SecurityException se)
 		{
 			textArea.append("Couldn't redirect STDOUT to this console\n"+se.getMessage());
 			textArea.setCaretPosition(textArea.getDocument().getLength()); //DWM 02-07-2012
+            logger.error("Couldn't redirect STDOUT to this console\n"+se.getMessage());
 	    }
 
 		try
@@ -92,11 +94,13 @@ public class JavaConsole extends WindowAdapter implements WindowListener, Action
 		{
 			textArea.append("Couldn't redirect STDERR to this console\n"+io.getMessage());
 			textArea.setCaretPosition(textArea.getDocument().getLength()); //DWM 02-07-2012
+            logger.error("Couldn't redirect STDERR to this console\n"+io.getMessage());
 		}
 		catch (SecurityException se)
 		{
 			textArea.append("Couldn't redirect STDERR to this console\n"+se.getMessage());
 			textArea.setCaretPosition(textArea.getDocument().getLength()); //DWM 02-07-2012
+            logger.error("Couldn't redirect STDERR to this console\n"+se.getMessage());
 	    }
 
 		try
@@ -107,23 +111,24 @@ public class JavaConsole extends WindowAdapter implements WindowListener, Action
 		{
 			textArea.append("Couldn't redirect STDIN to this console\n"+io.getMessage());
 			textArea.setCaretPosition(textArea.getDocument().getLength()); //DWM 02-07-2012
+            logger.error(io);
 		}
 		catch (SecurityException se)
 		{
 			textArea.append("Couldn't redirect STDIN to this console\n"+se.getMessage());
 			textArea.setCaretPosition(textArea.getDocument().getLength()); //DWM 02-07-2012
+            logger.error(se);
 	    }
 
         textArea.addKeyListener(new KeyListener() {
 
             public void keyPressed(KeyEvent e) {
-                if(e.getKeyChar() == '\b'){
-                    if(count > 0)
+                if(e.getKeyChar() == '\b') {
+                    if(count > 0) {
                         count--;
-                    else
+                    } else
                         textArea.getInputMap().put(KeyStroke.getKeyStroke("BACK_SPACE"), "none");
-                }
-                else{
+                } else {
                     count++;
                 }
             }
@@ -133,20 +138,20 @@ public class JavaConsole extends WindowAdapter implements WindowListener, Action
             }
 
             public void keyTyped(KeyEvent e)  {
-                try { pout3.write(e.getKeyChar()); } catch (IOException ex) {}
+                try { pout3.write(e.getKeyChar()); } catch (IOException ex) {logger.error(ex);}
             }}); //DWM 02-07-2012
-			
-		quit=false; // signals the Threads that they should exit
-				
-		// Starting two seperate threads to read from the PipedInputStreams				
-		reader=new Thread(this);
-		reader.setDaemon(true);	
-		reader.start();	
 
-		reader2=new Thread(this);	
-		reader2.setDaemon(true);	
+		quit=false; // signals the Threads that they should exit
+
+		// Starting two seperate threads to read from the PipedInputStreams
+		reader=new Thread(this);
+		reader.setDaemon(true);
+		reader.start();
+
+		reader2=new Thread(this);
+		reader2.setDaemon(true);
 		reader2.start();
-				
+
 	}
 
 	public void setLabel(String a){
@@ -161,84 +166,87 @@ public class JavaConsole extends WindowAdapter implements WindowListener, Action
 	 */
 	public synchronized void windowClosed(WindowEvent evt)
 	{
-		quit=true;
-        if(MainController.getArrayTaskList()!= null && MainController.getFile() != null) {
+		quit = true;
+        if(MainController.getArrayTaskList() != null && MainController.getFile() != null) {
 			try {
 				TaskIO.writeText(MainController.getArrayTaskList(), MainController.getFile());
 			} catch (IOException e) {
 				e.printStackTrace();
+                logger.error("No such file " + MainController.getFile().getName() + e);
 			}
 			try (PrintWriter out = new PrintWriter("TaskLists\\lastFile.txt")) {
 				out.println("TaskLists\\" + MainController.getFile().getName());
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
+                logger.error(e);
 			}
 		}
 		logger.debug("Session ended");
 		this.notifyAll(); // stop all threads
-		try { reader.join(1000);pin.close();   } catch (Exception e){}		
-		try { reader2.join(1000);pin2.close(); } catch (Exception e){}
+		try { reader.join(1000);pin.close();   } catch (Exception e) {logger.error(e);}
+		try { reader2.join(1000);pin2.close(); } catch (Exception e) {logger.error(e);}
 		try { pout3.close(); } catch (Exception e){} //DWM 02-07-2012
 		System.exit(0);
-	}		
-		
+	}
+
 	/* (non-Javadoc)
 	 * @see java.awt.event.WindowAdapter#windowClosing(java.awt.event.WindowEvent)
 	 */
 	public synchronized void windowClosing(WindowEvent evt)
 	{
-		frame.setVisible(false); // default behaviour of JFrame	
+		frame.setVisible(false); // default behaviour of JFrame
 		frame.dispose();
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
-	public synchronized void actionPerformed(ActionEvent evt)
-	{
-		this.clear();
-	}
+    public synchronized void actionPerformed(ActionEvent evt) {
+        this.clear();
+    }
 
 	/* (non-Javadoc)
 	 * @see java.lang.Runnable#run()
 	 */
-	public synchronized void run()
-	{
-		try
-		{			
-			while (Thread.currentThread()==reader)
-			{
-				try { this.wait(100);}catch(InterruptedException ie) {}
-				if (pin.available()!=0)
-				{
-					String input=this.readLine(pin);
-					textArea.append(input);
-					textArea.setCaretPosition(textArea.getDocument().getLength()); //DWM 02-07-2012
-				}
-				if (quit) return;
-			}
-		
-			while (Thread.currentThread()==reader2)
-			{
-				try { this.wait(100);}catch(InterruptedException ie) {}
-				if (pin2.available()!=0)
-				{
-					String input=this.readLine(pin2);
-					textArea.append(input);
-					textArea.setCaretPosition(textArea.getDocument().getLength()); //DWM 02-07-2012
-				}
-				if (quit) return;
-			}
-		} catch (Exception e)
-		{
-			textArea.append("\nConsole reports an Internal error.");
-			textArea.append("The error is: "+e);
-			textArea.setCaretPosition(textArea.getDocument().getLength()); //DWM 02-07-2012
-		}
-		
-	}
-	
-	/**
+    public synchronized void run() {
+        try {
+            while (Thread.currentThread() == reader) {
+                try {
+                    this.wait(100);
+                } catch (InterruptedException ie) {
+                    logger.error(ie);
+                }
+                if (pin.available() != 0) {
+                    String input = this.readLine(pin);
+                    textArea.append(input);
+                    textArea.setCaretPosition(textArea.getDocument().getLength()); //DWM 02-07-2012
+                }
+                if (quit) return;
+            }
+
+            while (Thread.currentThread() == reader2) {
+                try {
+                    this.wait(100);
+                } catch (InterruptedException ie) {
+                    logger.error(ie);
+                }
+                if (pin2.available() != 0) {
+                    String input = this.readLine(pin2);
+                    textArea.append(input);
+                    textArea.setCaretPosition(textArea.getDocument().getLength()); //DWM 02-07-2012
+                }
+                if (quit) return;
+            }
+        } catch (Exception e) {
+            textArea.append("\nConsole reports an Internal error.");
+            textArea.append("The error is: " + e);
+            textArea.setCaretPosition(textArea.getDocument().getLength()); //DWM 02-07-2012
+            logger.error("Console reports an Internal error " + e);
+        }
+
+    }
+
+    /**
 	 * @brief Read a line of text from the input stream
 	 * @param in The PipedInputStream to read
 	 * @return String A line of text
@@ -253,11 +261,11 @@ public class JavaConsole extends WindowAdapter implements WindowListener, Action
 			if (available==0) break;
 			byte b[]=new byte[available];
 			in.read(b);
-			input=input+new String(b,0,b.length);														
+			input=input+new String(b,0,b.length);
 		}while( !input.endsWith("\n") &&  !input.endsWith("\r\n") && !quit);
 		return input;
 	}
-	
+
 	/**
 	 * @brief Clear the console window
 	 */
@@ -265,7 +273,7 @@ public class JavaConsole extends WindowAdapter implements WindowListener, Action
 	{
 		textArea.setText("Welcome to TASK MANAGER.\nTo close the program, type \"exit\" or use option in main menu.\n\n");
 	}
-	
+
 	/**
 	 * @return the consol's background color
 	 */
@@ -278,7 +286,7 @@ public class JavaConsole extends WindowAdapter implements WindowListener, Action
 	 */
 	public void setBackground(Color bg) { //DWM 02-07-2012
 		this.textArea.setBackground(bg);
-	}	
+	}
 
 	/**
 	 * @return the consol's foreground color
@@ -294,7 +302,7 @@ public class JavaConsole extends WindowAdapter implements WindowListener, Action
 		this.textArea.setForeground(fg);
 		this.textArea.setCaretColor(fg);
 	}
-	
+
 	/**
 	 * @return the consol's font
 	 */
@@ -308,14 +316,14 @@ public class JavaConsole extends WindowAdapter implements WindowListener, Action
 	public void setFont(Font f) { //DWM 02-07-2012
 		textArea.setFont(f);
 	}
-	
+
 	/**
 	 * @param i the icon image to display in console window's corner
 	 */
 	public void setIconImage(Image i) { //DWM 02-07-2012
 		frame.setIconImage(i);
 	}
-	
+
 	/**
 	 * @param title the console window's title
 	 */
