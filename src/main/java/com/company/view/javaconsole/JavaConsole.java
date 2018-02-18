@@ -22,7 +22,7 @@ import org.apache.log4j.Logger;
  */
 
 public class JavaConsole extends WindowAdapter implements WindowListener, ActionListener, Runnable {
-    final static Logger logger = Logger.getLogger(JavaConsole.class);
+    private final static Logger logger = Logger.getLogger(JavaConsole.class);
     private JFrame frame;
     public JTextArea textArea;
     private Thread reader;

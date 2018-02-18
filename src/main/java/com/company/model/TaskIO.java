@@ -16,7 +16,7 @@ import org.apache.log4j.Logger;
  */
 
 public class TaskIO {
-    final static Logger logger = Logger.getLogger(TaskIO.class);
+    private final static Logger logger = Logger.getLogger(TaskIO.class);
     private static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 
     private static void write(TaskList tasks, OutputStream out) throws IOException {

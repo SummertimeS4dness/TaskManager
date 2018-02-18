@@ -27,7 +27,7 @@ import org.apache.log4j.Logger;
  * @bug
  */
 public class Menu {
-    final static Logger logger = Logger.getLogger(Menu.class);
+    private final static Logger logger = Logger.getLogger(Menu.class);
     private JavaConsole console;
     private int choosen;
 

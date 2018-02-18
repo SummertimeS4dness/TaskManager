@@ -25,7 +25,7 @@ import org.apache.log4j.Logger;
  */
 
 public class MainController {
-    final static Logger logger = Logger.getLogger(MainController.class);
+    private final static Logger logger = Logger.getLogger(MainController.class);
     private static boolean exit = true;
     private static boolean back = true;
     private static boolean back1 = true;

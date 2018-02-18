@@ -10,7 +10,7 @@ import org.apache.log4j.Logger;
  * @version MavenAndLog4j
  */
 public class Tasks {
-    final static Logger logger = Logger.getLogger(Tasks.class);
+    private final static Logger logger = Logger.getLogger(Tasks.class);
 
     /**
      * for getting tasks from interval of time.
