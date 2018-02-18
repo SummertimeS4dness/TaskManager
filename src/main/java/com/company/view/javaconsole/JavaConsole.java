@@ -164,8 +164,10 @@ public class JavaConsole extends WindowAdapter implements WindowListener, Action
     public synchronized void windowClosed(WindowEvent evt) {
         quit = true;
         if (MainController.getArrayTaskList() != null && MainController.getFile() != null) {
+            File save = new File("TaskLists\\" + MainController.getFile().getName());
             try {
                 TaskIO.writeText(MainController.getArrayTaskList(), MainController.getFile());
+                TaskIO.writeText(MainController.getArrayTaskList(), save);
             } catch (IOException e) {
                 e.printStackTrace();
                 logger.error("No such file " + MainController.getFile().getName() + e);

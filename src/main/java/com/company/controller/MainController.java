@@ -791,7 +791,9 @@ public class MainController {
 
     private static void exit() throws IOException {
         if (arrayTaskList != null && file != null) {
+            File save = new File("TaskLists\\" + MainController.getFile().getName());
             TaskIO.writeText(arrayTaskList, file);
+            TaskIO.writeText(arrayTaskList, save);
             try (PrintWriter out = new PrintWriter("TaskLists\\lastFile.txt")) {
                 out.println(file.getName());
             } catch (FileNotFoundException e) {

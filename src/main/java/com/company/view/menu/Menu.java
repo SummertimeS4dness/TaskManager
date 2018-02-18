@@ -5,6 +5,7 @@ import com.company.model.ArrayTaskList;
 import com.company.model.TaskIO;
 import com.company.view.javaconsole.JavaConsole;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -157,8 +158,10 @@ public class Menu {
             a = in.nextLine();
             b = MainController.processBackspace(a);
             if (b.equals("exit")) {
+                File save = new File("TaskLists\\" + MainController.getFile().getName());
                 if (MainController.getArrayTaskList() != null && MainController.getFile() != null) {
                     TaskIO.writeText(MainController.getArrayTaskList(), MainController.getFile());
+                    TaskIO.writeText(MainController.getArrayTaskList(), save);
                     try (PrintWriter out = new PrintWriter("TaskLists\\lastFile.txt")) {
                         out.println(MainController.getFile().getName());
                     } catch (FileNotFoundException e) {
