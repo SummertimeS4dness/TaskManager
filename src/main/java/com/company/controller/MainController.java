@@ -803,14 +803,13 @@ public class MainController {
     }
 
     private static void saveToFileHandler() throws IOException {
+        System.out.println("Enter name of file to save your list:");
+        consoleView.getConsole().setCountTo0();
+        String res = scanner.nextLine();
+        String name = processBackspace(res);
+        File save = new File("TaskLists\\" + name + ".txt");
         if (arrayTaskList != null && file != null) {
-            TaskIO.writeText(arrayTaskList, file);
-            try (PrintWriter out = new PrintWriter("TaskLists\\lastFile.txt")) {
-                out.println(file.getName());
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-                logger.error("No such file " + file.getName(), e);
-            }
+            TaskIO.writeText(arrayTaskList, save);
         }
         logger.debug("Saved to file \"" + fileName + "\"");
     }
