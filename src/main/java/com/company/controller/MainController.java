@@ -743,7 +743,7 @@ public class MainController {
             } catch (FileNotFoundException e) {
                 logger.error("No such file " + f.getName(), e);
             }
-            file = new File(fileName);
+            file = new File("TaskLists\\" + fileName);
             if (file != null) {
                 TaskIO.readText(arrayTaskList, file);
                 menu.clear();
