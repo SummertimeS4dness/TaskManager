@@ -171,6 +171,7 @@ public class Menu {
             }
             choosen = Integer.parseInt(b);
         } catch (Exception e1) {
+            logger.error(e1);
         }
 
         console.clear();

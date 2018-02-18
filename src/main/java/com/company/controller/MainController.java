@@ -142,6 +142,7 @@ public class MainController {
             start = dateFormat.parse(dateStr);
         } catch (ParseException e) {
             e.printStackTrace();
+            logger.error(e);
         }
 
         consoleView.getConsole().setCountTo0();
@@ -158,6 +159,7 @@ public class MainController {
             end = dateFormat.parse(dateStr);
         } catch (ParseException e) {
             e.printStackTrace();
+            logger.error(e);
         }
         consoleView.getConsole().setCountTo0();
         while (true) {
@@ -170,6 +172,7 @@ public class MainController {
                 break;
             } catch (NumberFormatException nfe) {
                 System.out.print("Error in your input, enter interval in minutes again: ");
+                logger.error(nfe);
             }
         }
         task = new Task(title, start, end, interval * 60000);
@@ -205,6 +208,7 @@ public class MainController {
             time = dateFormat.parse(dateStr);
         } catch (ParseException e) {
             e.printStackTrace();
+            logger.error(e);
         }
         task = new Task(title, time);
         arrayTaskList.add(task);
@@ -340,6 +344,7 @@ public class MainController {
                     date = dateFormat.parse(res1);
                 } catch (ParseException e) {
                     e.printStackTrace();
+                    logger.error(e);
                 }
                 task.setStart(date);
                 break;
@@ -357,6 +362,7 @@ public class MainController {
                     date = dateFormat.parse(res1);
                 } catch (ParseException e) {
                     e.printStackTrace();
+                    logger.error(e);
                 }
                 task.setEnd(date);
                 break;
@@ -371,6 +377,7 @@ public class MainController {
                         break;
                     } catch (NumberFormatException e) {
                         System.out.print("Error in your input, enter new interval in minutes again:");
+                        logger.error(e);
                         consoleView.getConsole().setCountTo0();
                     }
                 }
@@ -406,6 +413,7 @@ public class MainController {
                     date = dateFormat.parse(res1);
                 } catch (ParseException e) {
                     e.printStackTrace();
+                    logger.error(e);
                 }
                 task.setTime(date);
                 break;
@@ -426,6 +434,7 @@ public class MainController {
                         date = dateFormat.parse(dateStr);
                     } catch (ParseException e) {
                         e.printStackTrace();
+                        logger.error(e);
                     }
                     task.setTime(date);
                     back = false;
@@ -445,6 +454,7 @@ public class MainController {
                         start = dateFormat.parse(dateStr);
                     } catch (ParseException e) {
                         e.printStackTrace();
+                        logger.error(e);
                     }
 
                     consoleView.getConsole().setCountTo0();
@@ -461,6 +471,7 @@ public class MainController {
                         end = dateFormat.parse(dateStr);
                     } catch (ParseException e) {
                         e.printStackTrace();
+                        logger.error(e);
                     }
 
                     consoleView.getConsole().setCountTo0();
@@ -474,6 +485,7 @@ public class MainController {
                             break;
                         } catch (NumberFormatException nfe) {
                             System.out.print("Error in your input, interval in minutes again: ");
+                            logger.error(nfe);
                         }
                     }
                     task.setTime(start, end, interval * 60000);
@@ -565,6 +577,7 @@ public class MainController {
             start = dateFormat.parse(res1);
         } catch (ParseException e) {
             e.printStackTrace();
+            logger.error(e);
         }
 
         warning = "Enter end in format \"yyyy-MM-dd HH:mm\":";
@@ -580,6 +593,7 @@ public class MainController {
             end = dateFormat.parse(res1);
         } catch (ParseException e) {
             e.printStackTrace();
+            logger.error(e);
         }
         Map<Date, Set<Task>> calendar = Tasks.calendar(arrayTaskList, start, end);
         for (Map.Entry<Date, Set<Task>> entry : calendar.entrySet()) {
@@ -782,6 +796,7 @@ public class MainController {
                 out.println(file.getName());
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
+                logger.error("No such file " + file.getName(), e);
             }
         }
         logger.debug("Session ended");
@@ -794,6 +809,7 @@ public class MainController {
                 out.println(file.getName());
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
+                logger.error("No such file " + file.getName(), e);
             }
         }
         logger.debug("Saved to file \"" + fileName + "\"");
