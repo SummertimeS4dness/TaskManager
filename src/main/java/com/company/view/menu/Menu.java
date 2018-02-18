@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.EventListener;
 import java.util.Scanner;
 
 import org.apache.log4j.Logger;
@@ -29,6 +30,13 @@ public class Menu {
     final static Logger logger = Logger.getLogger(Menu.class);
     private JavaConsole console;
     private int choosen;
+
+    /**
+     * A menu callback interface for invoking methods.
+     */
+    public interface MenuCallback extends EventListener {
+        public void Invoke() throws IOException, ParseException;
+    }
 
     /**
      * getter of choosen.

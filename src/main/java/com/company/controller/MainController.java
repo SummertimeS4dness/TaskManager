@@ -3,7 +3,7 @@ package com.company.controller;
 import com.company.model.*;
 import com.company.view.ConsoleView;
 import com.company.view.menu.Menu;
-import com.company.view.menu.MenuCallback;
+import com.company.view.menu.Menu.MenuCallback;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -89,17 +89,17 @@ public class MainController {
     private static void addTaskHandler() throws IOException, ParseException {
         Menu menu = new Menu(ConsoleView.getConsole());
 
-        menu.add("Repeated", new MenuCallback() {
+        menu.add("Repeated", new Menu.MenuCallback() {
             public void Invoke() throws ParseException {
                 repeatedTaskHandler();
             }
         });
-        menu.add("Non-repeated", new MenuCallback() {
+        menu.add("Non-repeated", new Menu.MenuCallback() {
             public void Invoke() throws ParseException {
                 nonRepeatedTaskHandler();
             }
         });
-        menu.add("Back", new MenuCallback() {
+        menu.add("Back", new Menu.MenuCallback() {
             public void Invoke() {
                 backHandler();
             }
@@ -215,13 +215,13 @@ public class MainController {
     private static void editTaskHandler() throws IOException, ParseException {
         Menu menu = new Menu(ConsoleView.getConsole());
         for (Task task : arrayTaskList) {
-            menu.add(task.toString(), new MenuCallback() {
+            menu.add(task.toString(), new Menu.MenuCallback() {
                 public void Invoke() throws IOException, ParseException {
                     selectionOfCharacteristicHandler(menu);
                 }
             });
         }
-        menu.add("Back", new MenuCallback() {
+        menu.add("Back", new Menu.MenuCallback() {
             public void Invoke() {
                 backHandler();
             }
@@ -241,59 +241,59 @@ public class MainController {
         Menu menu1 = new Menu(ConsoleView.getConsole());
         consoleView.getConsole().setCountTo0();
         if (arrayTaskList.getTask(taskNumber - 1).isRepeated()) {
-            menu1.add("Title", new MenuCallback() {
+            menu1.add("Title", new Menu.MenuCallback() {
                 public void Invoke() throws ParseException {
                     editingOfCharacteristicHandler(1, menu);
                 }
             });
-            menu1.add("Start", new MenuCallback() {
+            menu1.add("Start", new Menu.MenuCallback() {
                 public void Invoke() throws ParseException {
                     editingOfCharacteristicHandler(2, menu);
                 }
             });
-            menu1.add("End", new MenuCallback() {
+            menu1.add("End", new Menu.MenuCallback() {
                 public void Invoke() throws ParseException {
                     editingOfCharacteristicHandler(3, menu);
                 }
             });
-            menu1.add("Interval", new MenuCallback() {
+            menu1.add("Interval", new Menu.MenuCallback() {
                 public void Invoke() throws ParseException {
                     editingOfCharacteristicHandler(4, menu);
                 }
             });
-            menu1.add("Active", new MenuCallback() {
+            menu1.add("Active", new Menu.MenuCallback() {
                 public void Invoke() throws ParseException {
                     editingOfCharacteristicHandler(5, menu);
                 }
             });
-            menu1.add("Type", new MenuCallback() {
+            menu1.add("Type", new Menu.MenuCallback() {
                 public void Invoke() throws ParseException {
                     editingOfCharacteristicHandler(7, menu);
                 }
             });
         } else {
-            menu1.add("Title", new MenuCallback() {
+            menu1.add("Title", new Menu.MenuCallback() {
                 public void Invoke() throws ParseException {
                     editingOfCharacteristicHandler(1, menu);
                 }
             });
-            menu1.add("Time", new MenuCallback() {
+            menu1.add("Time", new Menu.MenuCallback() {
                 public void Invoke() throws ParseException {
                     editingOfCharacteristicHandler(6, menu);
                 }
             });
-            menu1.add("Active", new MenuCallback() {
+            menu1.add("Active", new Menu.MenuCallback() {
                 public void Invoke() throws ParseException {
                     editingOfCharacteristicHandler(5, menu);
                 }
             });
-            menu1.add("Type", new MenuCallback() {
+            menu1.add("Type", new Menu.MenuCallback() {
                 public void Invoke() throws ParseException {
                     editingOfCharacteristicHandler(7, menu);
                 }
             });
         }
-        menu1.add("Back", new MenuCallback() {
+        menu1.add("Back", new Menu.MenuCallback() {
             public void Invoke() {
                 backHandler();
             }
@@ -491,13 +491,13 @@ public class MainController {
     private static void deleteTaskHandler() throws IOException, ParseException {
         Menu menu = new Menu(ConsoleView.getConsole());
         for (Task task : arrayTaskList) {
-            menu.add(task.toString(), new MenuCallback() {
+            menu.add(task.toString(), new Menu.MenuCallback() {
                 public void Invoke() {
                     deleteTaskHandler(menu);
                 }
             });
         }
-        menu.add("Back", new MenuCallback() {
+        menu.add("Back", new Menu.MenuCallback() {
             public void Invoke() {
                 backHandler();
             }
@@ -523,7 +523,7 @@ public class MainController {
 
     private static void listTaskHandler() throws IOException, ParseException {
         Menu menu = new Menu(ConsoleView.getConsole());
-        menu.add("Back", new MenuCallback() {
+        menu.add("Back", new Menu.MenuCallback() {
             public void Invoke() {
                 backHandler();
             }
@@ -584,13 +584,13 @@ public class MainController {
         Map<Date, Set<Task>> calendar = Tasks.calendar(arrayTaskList, start, end);
         for (Map.Entry<Date, Set<Task>> entry : calendar.entrySet()) {
             Set<Task> set = entry.getValue();
-            menu.add(entry.getKey().toString(), new MenuCallback() {
+            menu.add(entry.getKey().toString(), new Menu.MenuCallback() {
                 public void Invoke() throws IOException, ParseException {
                     dates(set);
                 }
             });
         }
-        menu.add("Back", new MenuCallback() {
+        menu.add("Back", new Menu.MenuCallback() {
             public void Invoke() {
                 backHandler();
             }
@@ -612,7 +612,7 @@ public class MainController {
     private static void dates(Set<Task> set) throws IOException, ParseException {
         back1 = true;
         Menu menu = new Menu(ConsoleView.getConsole());
-        menu.add("Back", new MenuCallback() {
+        menu.add("Back", new Menu.MenuCallback() {
             public void Invoke() {
                 backHandler1();
             }
@@ -635,37 +635,37 @@ public class MainController {
         String name = processBackspace(res);
         file = new File("TaskLists\\" + name + ".txt");
         menu.clear();
-        menu.add("Add new task", new MenuCallback() {
+        menu.add("Add new task", new Menu.MenuCallback() {
             public void Invoke() throws IOException, ParseException {
                 addTaskHandler();
             }
         });
-        menu.add("Edit task", new MenuCallback() {
+        menu.add("Edit task", new Menu.MenuCallback() {
             public void Invoke() throws IOException, ParseException {
                 editTaskHandler();
             }
         });
-        menu.add("Delete task", new MenuCallback() {
+        menu.add("Delete task", new Menu.MenuCallback() {
             public void Invoke() throws IOException, ParseException {
                 deleteTaskHandler();
             }
         });
-        menu.add("Task list", new MenuCallback() {
+        menu.add("Task list", new Menu.MenuCallback() {
             public void Invoke() throws IOException, ParseException {
                 listTaskHandler();
             }
         });
-        menu.add("Calendar", new MenuCallback() {
+        menu.add("Calendar", new Menu.MenuCallback() {
             public void Invoke() throws ParseException, IOException {
                 calendarTaskHandler();
             }
         });
-        menu.add("Save list to file", new MenuCallback() {
+        menu.add("Save list to file", new Menu.MenuCallback() {
             public void Invoke() throws IOException {
                 saveToFileHandler();
             }
         });
-        menu.add("Exit", new MenuCallback() {
+        menu.add("Exit", new Menu.MenuCallback() {
             public void Invoke() {
                 exitHandler();
             }
@@ -683,37 +683,37 @@ public class MainController {
         if (file != null) {
             TaskIO.readText(arrayTaskList, file);
             menu.clear();
-            menu.add("Add new task", new MenuCallback() {
+            menu.add("Add new task", new Menu.MenuCallback() {
                 public void Invoke() throws IOException, ParseException {
                     addTaskHandler();
                 }
             });
-            menu.add("Edit task", new MenuCallback() {
+            menu.add("Edit task", new Menu.MenuCallback() {
                 public void Invoke() throws IOException, ParseException {
                     editTaskHandler();
                 }
             });
-            menu.add("Delete task", new MenuCallback() {
+            menu.add("Delete task", new Menu.MenuCallback() {
                 public void Invoke() throws IOException, ParseException {
                     deleteTaskHandler();
                 }
             });
-            menu.add("Task list", new MenuCallback() {
+            menu.add("Task list", new Menu.MenuCallback() {
                 public void Invoke() throws IOException, ParseException {
                     listTaskHandler();
                 }
             });
-            menu.add("Calendar", new MenuCallback() {
+            menu.add("Calendar", new Menu.MenuCallback() {
                 public void Invoke() throws ParseException, IOException {
                     calendarTaskHandler();
                 }
             });
-            menu.add("Save list to file", new MenuCallback() {
+            menu.add("Save list to file", new Menu.MenuCallback() {
                 public void Invoke() throws IOException {
                     saveToFileHandler();
                 }
             });
-            menu.add("Exit", new MenuCallback() {
+            menu.add("Exit", new Menu.MenuCallback() {
                 public void Invoke() {
                     exitHandler();
                 }
@@ -733,37 +733,37 @@ public class MainController {
             if (file != null) {
                 TaskIO.readText(arrayTaskList, file);
                 menu.clear();
-                menu.add("Add new task", new MenuCallback() {
+                menu.add("Add new task", new Menu.MenuCallback() {
                     public void Invoke() throws IOException, ParseException {
                         addTaskHandler();
                     }
                 });
-                menu.add("Edit task", new MenuCallback() {
+                menu.add("Edit task", new Menu.MenuCallback() {
                     public void Invoke() throws IOException, ParseException {
                         editTaskHandler();
                     }
                 });
-                menu.add("Delete task", new MenuCallback() {
+                menu.add("Delete task", new Menu.MenuCallback() {
                     public void Invoke() throws IOException, ParseException {
                         deleteTaskHandler();
                     }
                 });
-                menu.add("Task list", new MenuCallback() {
+                menu.add("Task list", new Menu.MenuCallback() {
                     public void Invoke() throws IOException, ParseException {
                         listTaskHandler();
                     }
                 });
-                menu.add("Calendar", new MenuCallback() {
+                menu.add("Calendar", new Menu.MenuCallback() {
                     public void Invoke() throws ParseException, IOException {
                         calendarTaskHandler();
                     }
                 });
-                menu.add("Save list to file", new MenuCallback() {
+                menu.add("Save list to file", new Menu.MenuCallback() {
                     public void Invoke() throws IOException {
                         saveToFileHandler();
                     }
                 });
-                menu.add("Exit", new MenuCallback() {
+                menu.add("Exit", new Menu.MenuCallback() {
                     public void Invoke() {
                         exitHandler();
                     }
@@ -829,22 +829,22 @@ public class MainController {
         if (!dir.exists()) {
             new File("TaskLists").mkdir();
         }
-        consoleView.getMenu().add("New file", new MenuCallback() {
+        consoleView.getMenu().add("New file", new Menu.MenuCallback() {
             public void Invoke() {
                 newFileTaskHandler(consoleView.getMenu());
             }
         });
-        consoleView.getMenu().add("Existing file", new MenuCallback() {
+        consoleView.getMenu().add("Existing file", new Menu.MenuCallback() {
             public void Invoke() throws IOException, ParseException {
                 existingFileTaskHandler(consoleView.getMenu());
             }
         });
-        consoleView.getMenu().add("Continue last file", new MenuCallback() {
+        consoleView.getMenu().add("Continue last file", new Menu.MenuCallback() {
             public void Invoke() throws IOException, ParseException {
                 continueFileTaskHandler(consoleView.getMenu());
             }
         });
-        consoleView.getMenu().add("Exit", new MenuCallback() {
+        consoleView.getMenu().add("Exit", new Menu.MenuCallback() {
             public void Invoke() {
                 exitHandler();
             }
