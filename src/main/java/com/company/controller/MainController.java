@@ -595,26 +595,26 @@ public class MainController {
             e.printStackTrace();
             logger.error(e);
         }
-        Map<Date, Set<Task>> calendar = Tasks.calendar(arrayTaskList, start, end);
-        for (Map.Entry<Date, Set<Task>> entry : calendar.entrySet()) {
-            Set<Task> set = entry.getValue();
-            menu.add(entry.getKey().toString(), new Menu.MenuCallback() {
-                public void Invoke() throws IOException, ParseException {
-                    dates(set);
-                }
-            });
-        }
         menu.add("Back", new Menu.MenuCallback() {
             public void Invoke() {
                 backHandler();
             }
         });
         back = true;
-
+        ArrayTaskList calendar = new ArrayTaskList();
+        for (Task task: arrayTaskList) {
+            if(task.nextTimeAfter(start).compareTo(end) <= 0){
+                calendar.add(task);
+            }
+        }
         while (back) {
             ConsoleView.getConsole().clear();
             if (calendar.size() != 0) {
-                System.out.println("Your tasks for: " + start.toString() + " - " + end.toString());
+                System.out.println("Your tasks for: " + start.toString() + " - " + end.toString() + ":");
+                for (Task task: calendar) {
+                        System.out.println(task.toString());
+                        System.out.println();
+                }
             } else {
                 System.out.println("No tasks for: " + start.toString() + " - " + end.toString());
             }
@@ -811,7 +811,7 @@ public class MainController {
         if (arrayTaskList != null && file != null) {
             TaskIO.writeText(arrayTaskList, save);
         }
-        logger.debug("Saved to file \"" + fileName + "\"");
+        logger.debug("Saved to file \"" + save + "\"");
     }
 
     /**
