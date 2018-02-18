@@ -173,7 +173,7 @@ public class JavaConsole extends WindowAdapter implements WindowListener, Action
                 logger.error("No such file " + MainController.getFile().getName() + e);
             }
             try (PrintWriter out = new PrintWriter("TaskLists\\lastFile.txt")) {
-                out.println("TaskLists\\" + MainController.getFile().getName());
+                out.println(MainController.getFile().getName());
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
                 logger.error(e);
